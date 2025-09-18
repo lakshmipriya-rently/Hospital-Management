@@ -1,0 +1,43 @@
+<h1 class="text-center my-5 display-4 fw-bold text-primary border-bottom pb-3">
+  Bill
+</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+   <%= form_with model: @bill, local: true, html: { class: "needs-validation" } do |form| %>
+        <div class="mb-3">
+      
+      <%= form.hidden_field :appointment_id, value: @appointment_id %>
+  
+
+          <%= form.label :bill_date, "Date", class: "form-label" %>
+          <%= form.date_field :bill_date, class: "form-control" %>
+          <% if @bill.errors[:bill_date].any? %>
+            <div class="text-danger"><%= @bill.errors[:bill_date].first %></div>
+          <% end %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :tot_amount, "Total Amount", class: "form-label" %>
+          <%= form.number_field :tot_amount, class: "form-control" %>
+          <% if @bill.errors[:tot_amount].any? %>
+            <div class="text-danger"><%= @bill.errors[:tot_amount].first %></div>
+          <% end %>
+        </div>
+         <div class="mb-3">
+          <%= form.label :paid_amount, "Paid Amount", class: "form-label" %>
+          <%= form.number_field :paid_amount, class: "form-control" %>
+          <% if @bill.errors[:paid_amount].any? %>
+            <div class="text-danger"><%= @bill.errors[:paid_amount].first %></div>
+          <% end %>
+        </div>
+        <div class="form-check mb-3">
+            <%= form.check_box :is_assigned, class: "form-check-input", checked: true %>
+            <%= form.label :is_assigned, "Assigned", class: "form-check-label" %>
+         </div>
+        
+        <%= form.submit "Assign bill", class: "btn btn-primary w-100" %>
+
+     </div>
+    </div>
+    </div>
+  <% end %>

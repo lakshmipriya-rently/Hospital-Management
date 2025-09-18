@@ -1,0 +1,33 @@
+<h1 class="text-center my-5 display-4 fw-bold text-primary border-bottom pb-3">
+  Payment
+</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+  <div class="mb-3">
+  <%= form_with model:@payment,local: true do |form| %>
+  <%= form.hidden_field :bill_id, value: @bill_id %>
+  <%= form.label :payment_method, class: "form-label" %>
+  <%= form.select :payment_method, ['GPay','UPI','Paytm'], 
+                          { prompt: 'Select your payement method' }, 
+                          { class: "form-select" } %>
+  <%if @payment.errors[:payment_method].any? %>
+  <div class="text-danger"><%= @payment.errors[:payment_method].first %></div>
+  <% end %>
+
+    <div class="mb-3">
+          <%= form.label :amount_to_be_paid, class: "form-label" %>
+          <%= form.number_field :amount_to_be_paid, class: "form-control" %>
+
+           <%if @payment.errors[:amount_to_be_paid].any? %>
+          <div class="text-danger"><%= @payment.errors[:amount_to_be_paid].first %></div>
+          <% end %>
+
+        </div>
+        <%= form.submit "Pay", class: "btn btn-primary w-100 mt-3" %>
+   
+<% end %>
+  </div>
+  </div>
+  </div>
+  </div>

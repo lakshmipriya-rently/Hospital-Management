@@ -1,0 +1,121 @@
+<h1 class="text-center mb-4">New Doctor</h1>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%= form_with model: @doctor, url: doctors_path(user_id: @user.id), local: true, html: { class: "needs-validation" } do |form| %>
+        
+        <% if @doctor.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@doctor.errors.count, "error") %> prohibited this doctor from being saved:</h4>
+            <ul>
+              <% @doctor.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        
+        <div class="mb-3">
+          <%= form.label :license_id, "License ID", class: "form-label" %>
+          <%= form.text_field :license_id, class: "form-control" %>
+          <% if @doctor.errors[:license_id].any? %>
+            <div class="text-danger"><%= @doctor.errors[:license_id].first %></div>
+          <% end %>
+        </div>
+
+      
+        <div class="mb-3">
+          <%= form.label :experience, class: "form-label" %>
+          <%= form.number_field :experience, class: "form-control" %>
+          <% if @doctor.errors[:experience].any? %>
+            <div class="text-danger"><%= @doctor.errors[:experience].first %></div>
+          <% end %>
+        </div>
+
+      
+        <div class="mb-3">
+          <%= form.label :type_of_degree, "Degree Type", class: "form-label" %>
+          <%= form.select :type_of_degree, 
+                          ['MBBS','MD','DO','BDS','MS','MCh','DM','DNB','PhD','FRCS'], 
+                          { prompt: 'Select a category' }, 
+                          { class: "form-select" } %>
+          <% if @doctor.errors[:type_of_degree].any? %>
+            <div class="text-danger"><%= @doctor.errors[:type_of_degree].first %></div>
+          <% end %>
+        </div>
+
+       
+        <div class="mb-3">
+          <%= form.label :salary, class: "form-label" %>
+          <%= form.number_field :salary, min: 1000, class: "form-control" %>
+          <% if @doctor.errors[:salary].any? %>
+            <div class="text-danger"><%= @doctor.errors[:salary].first %></div>
+          <% end %>
+        </div>
+
+       
+        <h4 class="mt-4">Specializations</h4>
+        <div class="mb-4">
+          <%= form.label :specialization_ids, "Select Specializations", class: "form-label" %>
+          <%= form.collection_select :specialization_ids, Specialization.all, :id, :specialization, {}, { multiple: true, class: "form-select", size: 6 } %>
+          <% if @doctor.errors[:specialization_ids].any? %>
+            <div class="text-danger"><%= @doctor.errors[:specialization_ids].first %></div>
+          <% end %>
+          <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options.</small>
+        </div>
+
+       
+        <h4 class="mt-4">Doctor Availability</h4>
+        <%= form.fields_for :available do |a| %>
+          <!-- Available Days -->
+          <div class="mb-3">
+            <label class="form-label">Available Days</label>
+            <% Date::DAYNAMES.each do |day| %>
+              <div class="form-check">
+                <%= check_box_tag "doctor[available_attributes][available_days][]", day, @doctor.available&.available_days&.include?(day), class: "form-check-input", id: "available_days_#{day}" %>
+                <%= label_tag "available_days_#{day}", day, class: "form-check-label" %>
+              </div>
+            <% end %>
+            <% if @doctor.available&.errors[:available_days].any? %>
+              <div class="text-danger"><%= @doctor.available.errors[:available_days].first %></div>
+            <% end %>
+          </div>
+
+          
+          <div class="mb-3">
+            <%= a.label :start_time, class: "form-label" %>
+             <div class="d-flex gap-2">
+                  <%= a.time_select :start_time, {}, class: "form-select form-select-sm" %>
+             </div>
+            <% if @doctor.available&.errors[:start_time].any? %>
+              <div class="text-danger"><%= @doctor.available.errors[:start_time].first %></div>
+            <% end %>
+          </div>
+
+       
+          <div class="mb-3">
+            <%= a.label :end_time, class: "form-label" %>
+             <div class="d-flex gap-2">
+                  <%= a.time_select :end_time, {}, class: "form-select form-select-sm" %>
+             </div>
+            <% if @doctor.available&.errors[:end_time].any? %>
+              <div class="text-danger"><%= @doctor.available.errors[:end_time].first %></div>
+            <% end %>
+          </div>
+
+          
+          <div class="form-check mb-3">
+            <%= a.check_box :is_active, class: "form-check-input", checked: true %>
+            <%= a.label :is_active, "Available", class: "form-check-label" %>
+          </div>
+        <% end %>
+
+        <!-- Submit -->
+        <%= form.submit "Create Doctor", class: "btn btn-primary w-100 mt-3" %>
+
+      <% end %>
+    </div>
+  </div>
+</div>

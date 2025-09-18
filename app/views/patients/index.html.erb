@@ -1,0 +1,46 @@
+<h3 class="mb-4 text-primary fw-bold text-center shadow-sm border-bottom pb-2">
+  <i class="bi bi-calendar-check-fill me-2"></i>
+  Book Your Appointment!
+</h3>
+<div class="container">
+  <div class="row">
+    <% @doctors.each do |doctor| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm" style="border-radius: 15px;">
+          <div class="card-header bg-info text-white text-center fw-bold" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            Doctor Profile
+          </div>
+          <div class="card-body">
+            <p><span class="text-secondary fw-semibold">Name:</span> <%= doctor.users.first&.name || "No Name Found" %></p>
+            <p><span class="text-secondary fw-semibold">Email:</span> <%= doctor.users.first&.email || "No Email Found" %></p>
+            <p><span class="text-secondary fw-semibold">Experience:</span> <%= doctor.experience %> years</p>
+            <p><span class="text-secondary fw-semibold">Available Days:</span> <%= doctor.available&.available_days&.join(", ") || "N/A" %></p>
+            <p><span class="text-secondary fw-semibold">Available Time:</span> 
+              <%= doctor.available&.start_time&.strftime("%H:%M") || "N/A" %> - 
+              <%= doctor.available&.end_time&.strftime("%H:%M") || "N/A" %>
+            </p>
+            <p>
+              <span class="text-secondary fw-semibold">Status:</span> 
+              <% if doctor.available&.is_active? %>
+                <span class="badge bg-success">Active</span>
+              <% else %>
+                <span class="badge bg-danger">Not Active</span>
+              <% end %>
+            </p>
+            <p><span class="text-secondary fw-semibold">Specialization:</span> <%= doctor.specializations.map(&:specialization).join(", ") %></p>
+           <% if @patient_id.present? %>
+  <%= link_to "Book Appointment", new_appointment_path(doctor_id: doctor.id, patient_id: @patient_id), class: "btn btn-primary" %>
+<% else %>
+  <span class="text-danger">Patient not specified</span>
+<% end %>
+
+              
+            </div>
+
+        </div>
+        
+      </div>
+    
+    <% end %>
+  </div>
+</div>

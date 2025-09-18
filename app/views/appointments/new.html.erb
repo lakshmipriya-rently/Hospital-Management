@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Book New Appointment</h4>
+        </div>
+        <div class="card-body">
+         <%= form_with model: @appointment, local: true, html: { class: "needs-validation" } do |form| %>
+
+           <%= form.hidden_field :patient_id, value: @patient_id %>
+           <%= form.hidden_field :doctor_id, value: @doctor_id %>
+
+
+            <div class="mb-3">
+              <%= form.label :appointment_date, "Appointment Date", class: "form-label" %>
+              <%= form.date_field :appointment_date, class: "form-control", required: true %>
+              <% if @appointment.errors[:appointment_date].any? %>
+                <div class="invalid-feedback d-block">
+                  <%= @appointment.errors[:appointment_date].first %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :appointment_time, "Appointment Time", class: "form-label" %>
+              <%= form.time_field :appointment_time,
+                                  class: "form-control",
+                                  value: @appointment.appointment_time&.strftime("%H:%M"),
+                                  required: true %>
+              <% if @appointment.errors[:appointment_time].any? %>
+                <div class="invalid-feedback d-block">
+                  <%= @appointment.errors[:appointment_time].first %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="d-grid">
+              <%= form.submit "Book Appointment", class: "btn btn-primary" %>
+            </div>
+  
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

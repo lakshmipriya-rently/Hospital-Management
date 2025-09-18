@@ -1,0 +1,70 @@
+
+<h1 class="text-center mb-4">New Staff</h1>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <%= form_with model: @staff, url: staffs_path(user_id: @user.id), local: true, html: { class: "needs-validation" } do |form| %>
+
+       
+        <div class="mb-3">
+          <label class="form-label d-block">Permanent Staff</label>
+          <div class="form-check form-check-inline">
+            <%= form.radio_button :is_permanant, true, id: "is_permanant_yes", class: "form-check-input" %>
+            <%= form.label :is_permanant, "Yes", for: "is_permanant_yes", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.radio_button :is_permanant, false, id: "is_permanant_no", class: "form-check-input" %>
+            <%= form.label :is_permanant, "No", for: "is_permanant_no", class: "form-check-label" %>
+          </div>
+           <%if @staff.errors[:is_permanant].any? %>
+          <div class="text-danger"><%= @staff.errors[:is_permanant].first %></div>
+          <% end %>
+        </div>
+
+        
+        <div class="mb-3">
+          <%= form.label :salary, class: "form-label" %>
+          <%= form.number_field :salary, min: 1000, class: "form-control" %>
+          <%if @staff.errors[:salary].any? %>
+          <div class="text-danger"><%= @staff.errors[:salary].first %></div>
+          <% end %>
+          </div>
+
+       
+        <div class="mb-3">
+          <%= form.label :qualification, class: "form-label" %>
+          <%= form.select :qualification, [
+              'GNM', 'B.Sc Nursing', 'ANM', 'DMLT', 'BMLT', 'B.Pharm', 'D.Pharm',
+              'B.Com', 'MBA (HR)', 'MHA', 'Diploma in Radiography', 'BPT',
+              'BCA', 'MCA', 'Diploma in Computer Applications', '10th Pass', '12th Pass'
+            ],
+            { prompt: 'Select qualification' },
+            { class: "form-select" } %>
+              <%if @staff.errors[:qualification].any? %>
+          <div class="text-danger"><%= @staff.errors[:qualification].first %></div>
+          <% end %>
+        </div>
+
+       
+         <div class="mb-3">
+          <label class="form-label d-block">Preferred Shift</label>
+          <div class="form-check form-check-inline">
+            <%= form.radio_button :shift, "night", id: "shift_night", class: "form-check-input" %>
+            <%= form.label :shift, "Night", for: "shift_night", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.radio_button :shift, "day", id: "shift_day", class: "form-check-input" %>
+            <%= form.label :shift, "Day", for: "shift_day", class: "form-check-label" %>
+          </div>
+           <%if @staff.errors[:shift].any? %>
+          <div class="text-danger"><%= @staff.errors[:shift].first %></div>
+          <% end %>
+        </div>
+
+        <%= form.submit "Add Staff", class: "btn btn-primary w-100" %>
+        
+      <% end %>
+    </div>
+  </div>
+</div>
