@@ -6,15 +6,11 @@ class BillsController < ApplicationController
     end
     def create
         @bill = Bill.new(bill_params)
-        puts "bill params #{params.inspect}"
-       
-        
          if @bill.save
             redirect_to staffs_path,notice: 'Bill has successfully assigned'
         else
-            puts " bill errors ------------->"
             puts @bill.errors.full_messages
-            render :new,status: :unprocessable_entity
+            render :new
         end
     end
     def bill_params

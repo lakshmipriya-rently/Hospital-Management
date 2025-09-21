@@ -1,27 +1,35 @@
 class UsersController < ApplicationController
-   
-    def new 
-        @user = User.new 
-    end
 
+    def new 
+        puts "inside the user page"
+        @user = User.new
+        p @user.errors.full_messages
+        p "#{params.inspect}"
+    end
+    
     def create
-        @user = User.new(user_params.except(:userable_type))
-        userable_type = params[:user][:userable_type].downcase
+        puts "inside the create"
+        @user = User.new(user_params)
+        userable_type = params[:user][:userable_type]
+        p "#{user_params}"
         if @user.save
             case userable_type
-            when "doctor"
+            when "Doctor"
              redirect_to new_doctor_path(user_id: @user.id),notice:'User was successfully created'
-            when "patient"
+            when "Patient"
              redirect_to new_patient_path(user_id: @user.id),notice:'User was successfully created'
-            when "staff"
+            when "Staff"
              redirect_to new_staff_path(user_id: @user.id),notice:'User was successfully created'
             end
         else
+          puts @user.errors.full_messages
           render :new,status: :unprocessable_entity
         end
     end
 
+    private
+
     def user_params
-        params.require(:user).permit(:name,:email,:phone_no,:dob,:age,:gender,:userable_type)
+        params.require(:user).permit(:name,:phone_no,:dob,:age,:gender)
     end
 end

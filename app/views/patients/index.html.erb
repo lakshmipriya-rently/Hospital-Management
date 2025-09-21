@@ -12,7 +12,6 @@
           </div>
           <div class="card-body">
             <p><span class="text-secondary fw-semibold">Name:</span> <%= doctor.users.first&.name || "No Name Found" %></p>
-            <p><span class="text-secondary fw-semibold">Email:</span> <%= doctor.users.first&.email || "No Email Found" %></p>
             <p><span class="text-secondary fw-semibold">Experience:</span> <%= doctor.experience %> years</p>
             <p><span class="text-secondary fw-semibold">Available Days:</span> <%= doctor.available&.available_days&.join(", ") || "N/A" %></p>
             <p><span class="text-secondary fw-semibold">Available Time:</span> 

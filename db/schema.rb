@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_18_085446) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_21_132617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,16 +99,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_18_085446) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.bigint "userable_id"
     t.string "userable_type"
-    t.string "email"
-    t.string "phone_no"
+    t.bigint "userable_id"
+    t.string "name"
+    t.date "dob"
+    t.integer "age"
     t.string "gender"
-    t.string "age"
+    t.string "phone_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "dob"
+    t.index ["userable_type", "userable_id"], name: "index_users_on_userable"
   end
 
   add_foreign_key "appointments", "doctors"

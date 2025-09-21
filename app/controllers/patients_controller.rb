@@ -1,6 +1,7 @@
 class PatientsController < ApplicationController
     def new
         @user = User.find(params[:user_id])
+        puts "user id--------------> #{params[:user_id]}"
         @patient = Patient.new
     end
 
@@ -13,9 +14,9 @@ class PatientsController < ApplicationController
     def create
       @user = User.find(params[:user_id])
       @patient = Patient.new(patient_params)
+      @user.update(userable: @patient)
 
       if @patient.save
-        @user.update(userable: @patient)
         redirect_to patients_path(patient_id: @patient.id), notice: "Patient profile created successfully."
       else
         render :new,status: :unprocessable_entity
@@ -28,7 +29,7 @@ class PatientsController < ApplicationController
        @bills = @appointments.map(&:bill).compact
      end
 
-
+    private
 
     def patient_params
       params.require(:patient).permit(:blood_group,:disease,:organ_donor,:address)

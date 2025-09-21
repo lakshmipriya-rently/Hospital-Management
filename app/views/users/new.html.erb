@@ -13,14 +13,6 @@
         </div>
 
         <div class="mb-3">
-          <%= form.label :email, class: "form-label" %>
-          <%= form.email_field :email, class: "form-control" %>
-           <%if @user.errors[:email].any? %>
-          <div class="text-danger">email <%= @user.errors[:email].first %></div>
-          <% end %>
-        </div>
-
-        <div class="mb-3">
           <%= form.label :phone_no, class: "form-label" %>
           <%= form.text_field :phone_no, class: "form-control" %>
            <%if @user.errors[:phone_no].any? %>
@@ -33,14 +25,6 @@
           <%= form.date_field :dob, class: "form-control" %>
            <%if @user.errors[:dob].any? %>
           <div class="text-danger">DOB <%= @user.errors[:dob].first %></div>
-          <% end %>
-        </div>
-
-        <div class="mb-3">
-          <%= form.label :age, class: "form-label" %>
-          <%= form.number_field :age, min: 1, class: "form-control" %>
-           <%if @user.errors[:age].any? %>
-          <div class="text-danger">Age <%= @user.errors[:age].first %></div>
           <% end %>
         </div>
 

@@ -9,7 +9,6 @@
         <div class="card-body">
         <% user = User.find_by(userable_id: @patient.id, userable_type: "Patient") %>
        <p><strong>Name:</strong> <%= user&.name || "N/A" %></p>
-       <p><strong>Name:</strong> <%= user&.email || "N/A" %></p>
        <p><strong>Name:</strong> <%= user&.phone_no || "N/A" %></p>
        <p><strong>Name:</strong> <%= @patient.disease || "N/A" %></p>
 

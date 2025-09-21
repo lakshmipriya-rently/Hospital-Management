@@ -9,16 +9,12 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(appointment_params)
     @appointment.status = :pending
     if @appointment.save
-      puts "in appointment patient id :#{@appointment.patient.id}"
       redirect_to patient_path(@appointment.patient.id), notice: "Appointment booked successfully."
     else
       puts @appointment.errors.full_messages
-
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
-  
-
 
   def update
   @appointment = Appointment.find(params[:id])
