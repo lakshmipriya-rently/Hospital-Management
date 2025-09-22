@@ -29,9 +29,9 @@ end
 
   def appointment_params
     params.require(:appointment).permit(
-      :appointment_date, 
-      :appointment_time, 
-      :patient_id, 
+      :appointment_date,
+      :appointment_time,
+      :patient_id,
       :doctor_id,
       :status
     )

@@ -5,6 +5,16 @@
         <div class="card-header bg-primary text-white text-center">
           <h4 class="mb-0">Book New Appointment</h4>
         </div>
+        <% if @appointment.errors.any? %>
+  <div class="alert alert-danger">
+    <h5><%= pluralize(@appointment.errors.count, "error") %> prevented this form from saving:</h5>
+    <ul>
+      <% @appointment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
         <div class="card-body">
          <%= form_with model: @appointment, local: true, html: { class: "needs-validation" } do |form| %>
 

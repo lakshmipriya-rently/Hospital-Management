@@ -1,5 +1,5 @@
 class StaffsController < ApplicationController
-     def index 
+     def index
         @appointments = Appointment.confirmed
      end
      def new
@@ -14,14 +14,13 @@ class StaffsController < ApplicationController
         @user.update(userable: @staff)
         redirect_to staffs_path, notice: "Staff profile created successfully."
       else
-        render :new,status: :unprocessable_entity
+        render :new, status: :unprocessable_entity
       end
     end
-   
-    private
-    
-    def staff_params
-      params.require(:staff).permit(:is_permanant,:salary,:qualification,:shift)
-    end
 
+    private
+
+    def staff_params
+      params.require(:staff).permit(:is_permanant, :salary, :qualification, :shift)
+    end
 end
