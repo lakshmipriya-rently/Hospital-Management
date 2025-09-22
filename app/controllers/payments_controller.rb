@@ -18,9 +18,9 @@ class PaymentsController < ApplicationController
         end
     end
 
-    private 
+    private
 
     def payment_params
-        params.require(:payment).permit(:amount_to_be_paid,:payment_method,:status,:bill_id)
+        params.require(:payment).permit(:amount_to_be_paid, :payment_method, :status, :bill_id)
     end
 end

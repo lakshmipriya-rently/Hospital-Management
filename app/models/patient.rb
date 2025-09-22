@@ -3,8 +3,7 @@ class Patient < ApplicationRecord
     has_many :doctors, through: :appointments
     has_many :bills
     has_many :user, as: :userable, dependent: :destroy
-    
 
-    validates :blood_group,:address,:disease,presence:true
 
+    validates :blood_group, :address, :disease, presence: true
 end

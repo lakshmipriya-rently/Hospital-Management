@@ -10,7 +10,7 @@ class PatientsController < ApplicationController
         @patients = Patient.all
         @patient_id = params[:patient_id]
     end
-    
+
     def create
       @user = User.find(params[:user_id])
       @patient = Patient.new(patient_params)
@@ -19,7 +19,7 @@ class PatientsController < ApplicationController
       if @patient.save
         redirect_to patients_path(patient_id: @patient.id), notice: "Patient profile created successfully."
       else
-        render :new,status: :unprocessable_entity
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -32,8 +32,6 @@ class PatientsController < ApplicationController
     private
 
     def patient_params
-      params.require(:patient).permit(:blood_group,:disease,:organ_donor,:address)
+      params.require(:patient).permit(:blood_group, :disease, :organ_donor, :address)
     end
-
-
 end

@@ -4,14 +4,14 @@ class HomeController < ApplicationController
 
   def redirect_by_role
      case current_user.userable_type
-    when "Doctor"
+     when "Doctor"
       redirect_to doctor_path(current_user.userable)
-    when "Patient"
+     when "Patient"
       redirect_to patient_path(current_user.userable)
-    when "Staff"
+     when "Staff"
       redirect_to staffs_path(current_user.userable)
-    else
+     else
       redirect_to unauthenticated_root_path
-    end
+     end
   end
 end

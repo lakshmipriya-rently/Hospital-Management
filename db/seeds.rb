@@ -29,4 +29,3 @@ specializations = [
 specializations.each do |sp_name|
   Specialization.find_or_create_by!(specialization: sp_name)
 end
-

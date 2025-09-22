@@ -25,8 +25,5 @@ Rails.application.routes.draw do
   resources :staffs
   resources :appointments
   resources :bills
-  resources :payments 
+  resources :payments
 end
-
-
-  
