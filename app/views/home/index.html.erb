@@ -1,0 +1,52 @@
+<div class="hero-section text-center text-white py-5">
+  <div class="container">
+    <h1 class="display-3 fw-bold mb-3">Welcome to <span class="text-accent">eDoc</span></h1>
+    <p class="lead mb-4">
+      Smarter healthcare management for patients.
+    </p>
+    <div>
+      <%= link_to "Make Appointment", new_user_session_path, class: "btn btn-accent btn-lg me-2 shadow" %>
+      <%= link_to "View Doctors", new_user_session_path, class: "btn btn-outline-light btn-lg shadow" %>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="card feature-card shadow-lg border-0 rounded-4 h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-accent">For Patients</h5>
+          <p class="card-text text-muted">
+            Book appointments easily and keep track of your medical history.
+          </p>
+          <%= link_to "Get Started", new_user_session_path, class: "btn btn-sm btn-accent" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card feature-card shadow-lg border-0 rounded-4 h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-accent">For Doctors</h5>
+          <p class="card-text text-muted">
+            Manage patients, schedules, and provide better care with ease.
+          </p>
+          <%= link_to "Join as Doctor", new_user_session_path, class: "btn btn-sm btn-accent" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card feature-card shadow-lg border-0 rounded-4 h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-accent">Hospital Staff</h5>
+          <p class="card-text text-muted">
+            Keep everything organized with appointments, billing, and reports.
+          </p>
+          <%= link_to "Staff Access", new_user_session_path, class: "btn btn-sm btn-accent" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

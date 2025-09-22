@@ -1,6 +1,10 @@
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
     belongs_to :userable,polymorphic: true,optional: true
-    validates :name,:dob,presence: true
+    validates :name,presence: true
     validates :phone_no, length: { is: 10, message: "must be exactly 10 digits" }
 
     before_save :clean_phone_number
@@ -11,9 +15,9 @@ class User < ApplicationRecord
 
     private
     def dob_cannot_be_in_future
-        return if dob.blank?
-
-        if dob > Date.today
+        if dob.blank?
+            errors.add(:dob,"please enter DOB")
+        elsif dob > Date.today
             errors.add(:dob, "can't be in the future")
         end
     end
