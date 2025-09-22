@@ -9,15 +9,17 @@ class PaymentsController < ApplicationController
         @bill = Bill.find(payment_params[:bill_id])
 
         if @payment.save
-           
             redirect_to patient_path(@bill.appointment.patient.id)
             puts "successfully saved"
         else
             puts @payment.errors.full_messages
             puts "payment data not saved"
-            render :new,status: :unprocessable_entity
+            render :new
         end
     end
+
+    private 
+
     def payment_params
         params.require(:payment).permit(:amount_to_be_paid,:payment_method,:status,:bill_id)
     end

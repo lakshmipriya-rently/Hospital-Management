@@ -1,74 +1,129 @@
-<div class="container my-5">
+<div class="container-fluid my-4">
   <div class="row">
-    <!-- Patient Info -->
-    <div class="col-md-4">
-      <div class="card rounded-4 shadow-lg border-0">
-        <div class="card-header bg-primary text-white rounded-top-4">
-          <h4 class="mb-0">Your Details</h4>
-        </div>
-        <div class="card-body">
-        <% user = User.find_by(userable_id: @patient.id, userable_type: "Patient") %>
-       <p><strong>Name:</strong> <%= user&.name || "N/A" %></p>
-       <p><strong>Name:</strong> <%= user&.email || "N/A" %></p>
-       <p><strong>Name:</strong> <%= user&.phone_no || "N/A" %></p>
-       <p><strong>Name:</strong> <%= @patient.disease || "N/A" %></p>
+    <!-- Sidebar / Patient Profile -->
+    <div class="col-md-3 pe-0"> <!-- removed right padding to push card left -->
+      <div class="card shadow-sm border-0 rounded-4" style="margin-left: -10px;"> <!-- nudged left -->
+        <div class="card-body text-center p-4">
+          <!-- Profile Avatar -->
+          <div class="mb-3">
+            <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
+          </div>
+          <% user = User.find_by(userable_id: @patient.id, userable_type: "Patient") %>
+          <h4 class="fw-bold mb-2"><%= user&.name || "N/A" %></h4>
+          <p class="text-muted fs-5 mb-1"><%= user&.email || "N/A" %></p>
+          <p class="text-muted fs-5"><%= user&.phone_no || "N/A" %></p>
+
+          <hr>
+
+          <%= link_to "View Doctors", patients_path(patient_id: @patient.id),
+                        class: "btn btn-primary w-100 mt-3 fs-5 py-2" %>
 
         </div>
       </div>
     </div>
 
-    <!-- Appointments List -->
-    <div class="col-md-8">
-      <h3 class="mb-4">Your Appointments</h3>
-
-      <% if @appointments.any? %>
-        <div class="list-group">
-          <% @appointments.each do |appointment| %>
-            <% status_class = {
-              "pending" => "warning",
-              "confirmed" => "success",
-              "canceled" => "danger"
-            }[appointment.status] || "secondary" %>
-
-            <a href="<%= appointment_path(appointment) %>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center rounded-4 mb-3 shadow-sm">
-              <div>
-                <strong>Date:</strong> <%= appointment.appointment_date.strftime("%B %d, %Y") %> at <%= appointment.appointment_time&.strftime("%I:%M %p") || "N/A" %>
-              </div>
-              <span class="badge bg-<%= status_class %> rounded-pill text-uppercase">
-                <%= appointment.status %>
-              </span>
-            </a>
+    <!-- Main Content -->
+    <div class="col-md-9 ps-3">
+      <!-- Appointments Section -->
+      <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-header bg-light rounded-top-4 py-3">
+          <h4 class="fw-bold mb-0 text-primary">
+            <i class="bi bi-calendar-check me-2"></i> Your Appointments
+          </h4>
+        </div>
+        <div class="card-body fs-5">
+          <% if @appointments.any? %>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle fs-5">
+                <thead class="table-light">
+                  <tr>
+                    <th class="py-3">Date</th>
+                    <th class="py-3">Time</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Doctor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @appointments.each do |appointment| %>
+                    <% doctor = Doctor.find(appointment.doctor_id) rescue nil %>
+                    <tr>
+                      <td class="py-3"><%= appointment.appointment_date.strftime("%B %d, %Y") %></td>
+                      <td class="py-3"><%= appointment.appointment_time&.strftime("%I:%M %p") || "N/A" %></td>
+                      <td class="py-3">
+                        <% status_class = {
+                          "pending" => "warning",
+                          "confirmed" => "success",
+                          "canceled" => "danger"
+                        }[appointment.status] || "secondary" %>
+                        <span class="badge bg-<%= status_class %> fs-6 px-3 py-2">
+                          <%= appointment.status.capitalize %>
+                        </span>
+                      </td>
+                      <td class="py-3"><%= doctor&.users&.first&.name || "N/A" %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted fs-5">You have no appointments booked.</p>
           <% end %>
         </div>
-      <% else %>
-        <p>You have no appointments booked.</p>
-      <% end %>
-      <!-- Bills List -->
-<h3 class="mt-5 mb-4">Your Bills</h3>
-
-<% if @bills.any? %>
-  <div class="list-group">
-    <% @bills.each do |bill| %>
-      <% appointment = bill.appointment %>
-      <div class="list-group-item rounded-4 mb-3 shadow-sm">
-        <p><strong>Appointment Date:</strong> <%= appointment.appointment_date.strftime("%B %d, %Y") %></p>
-        <p><strong>Total Amount:</strong> $<%= bill.tot_amount %></p>
-        <p><strong>Paid Amount:</strong> $<%= bill.paid_amount %></p>
-        <p><strong>Status:</strong> 
-          <% if bill.is_assigned %>
-            <span class="badge bg-success">Assigned</span>
-          <% else %>
-            <span class="badge bg-secondary">Not Assigned</span>
-          <% end %>
-        </p>
-        <% payment = Payment.find_by(bill_id: bill.id) %>
-        <%= payment&.status%>
-         
-        <%= link_to "Pay Bill", new_payment_path(bill_id: bill.id,patient_id: @patient.id), class: "btn btn-outline-primary btn-sm mt-2" %>
       </div>
-    <% end %>
-  </div>
-<% else %>
-  <p>No bills assigned yet.</p>
-<% end %>
 
+      <!-- Bills Section -->
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-light rounded-top-4 py-3">
+          <h4 class="fw-bold mb-0 text-primary">
+            <i class="bi bi-receipt-cutoff me-2"></i> Your Bills
+          </h4>
+        </div>
+        <div class="card-body fs-5">
+          <% if @bills.any? %>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle fs-5">
+                <thead class="table-light">
+                  <tr>
+                    <th class="py-3">Date</th>
+                    <th class="py-3">Total</th>
+                    <th class="py-3">Paid</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @bills.each do |bill| %>
+                    <% appointment = bill.appointment %>
+                    <% payment = Payment.find_by(bill_id: bill.id) %>
+                    <tr>
+                      <td class="py-3"><%= appointment.appointment_date.strftime("%B %d, %Y") %></td>
+                      <td class="py-3">$<%= bill.tot_amount %></td>
+                      <td class="py-3">$<%= bill.paid_amount %></td>
+                      <td class="py-3">
+                        <% if bill.is_assigned %>
+                          <span class="badge bg-success fs-6 px-3 py-2">Assigned</span>
+                        <% else %>
+                          <span class="badge bg-secondary fs-6 px-3 py-2">Not Assigned</span>
+                        <% end %>
+                      </td>
+                      <td class="py-3">
+                        <% if payment.present? %>
+                          <span class="badge bg-info fs-6 px-3 py-2"><%= payment.status %></span>
+                        <% else %>
+                          <%= link_to "Pay Bill", new_payment_path(bill_id: bill.id, patient_id: @patient.id),
+                                        class: "btn btn-outline-primary btn-sm fs-6 px-4 py-2" %>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted fs-5">No bills assigned yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

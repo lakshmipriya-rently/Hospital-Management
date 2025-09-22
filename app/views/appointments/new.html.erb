@@ -29,9 +29,7 @@
                                   value: @appointment.appointment_time&.strftime("%H:%M"),
                                   required: true %>
               <% if @appointment.errors[:appointment_time].any? %>
-                <div class="invalid-feedback d-block">
-                  <%= @appointment.errors[:appointment_time].first %>
-                </div>
+               <div class="text-danger"><%= @appointment.errors[:appointment_time].first %></div> 
               <% end %>
             </div>
 

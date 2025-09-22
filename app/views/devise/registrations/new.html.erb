@@ -1,0 +1,73 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-4 rounded-4" style="max-width: 500px; width: 100%;">
+    <h1 class="mb-4 text-center text-primary fw-bold">Create Account</h1>
+   <% if @user.errors.any? %>
+  <div class="alert alert-danger">
+    <h5><%= pluralize(@user.errors.count, "error") %> prevented this form from saving:</h5>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+      <div class="mb-3">
+        <%= f.label :name, class: "form-label fw-semibold" %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :phone_no, class: "form-label fw-semibold" %>
+        <%= f.text_field :phone_no, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :dob, "Date of Birth", class: "form-label fw-semibold" %>
+        <%= f.date_field :dob, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :gender, class: "form-label fw-semibold d-block" %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :gender, "male", class: "form-check-input" %>
+          <%= f.label :gender, "Male", value: "male", class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :gender, "female", class: "form-check-input" %>
+          <%= f.label :gender, "Female", value: "female", class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :gender, "other", class: "form-check-input" %>
+          <%= f.label :gender, "Other", value: "other", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :userable_type, "Role", class: "form-label fw-semibold" %>
+        <%= f.select :userable_type, ['Doctor', 'Patient', 'Staff'], { prompt: 'Select your role' }, class: "form-select" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label fw-semibold" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label fw-semibold" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, class: "form-label fw-semibold" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Sign up", class: "btn btn-primary btn-lg fw-semibold" %>
+      </div>
+    <% end %>
+  </div>
+</div>

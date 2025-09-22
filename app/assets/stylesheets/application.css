@@ -12,4 +12,142 @@
  *
  *= require_tree .
  *= require_self
- */
+ *//* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #A2DFF7, #3A9AD9);
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Accent text and button */
+.text-accent {
+  color: #14718f;
+}
+
+.btn-accent {
+  background-color: #6BCBEB;
+  border-color: #6BCBEB;
+  color: #fff;
+}
+
+.btn-accent:hover {
+  background-color: #3A9AD9;
+  border-color: #3A9AD9;
+  color: #fff;
+}
+
+/* Navbar theme */
+.navbar {
+  background-color: #007BBA !important;
+}
+
+/* Success style (if you confirm green code) */
+.btn-success-custom {
+  background-color: #00FF6B; /* assuming this was your intended green */
+  border-color: #00FF6B;
+  color: #fff;
+}
+
+.btn-success-custom:hover {
+  background-color: #00cc55;
+  border-color: #00cc55;
+  color: #fff;
+}
+
+/* Feature Cards */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.custom-navbar {
+  background: linear-gradient(90deg, #007BBA, #3A9AD9, #6BCBEB);
+  border-bottom: 3px solid #A2DFF7;
+}
+
+.custom-navbar .navbar-brand {
+  color: #fff !important;
+}
+
+.custom-navbar .navbar-toggler {
+  border-color: #fff;
+}
+
+.custom-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Buttons */
+.btn-light {
+  background-color:  #fbfbfb;
+  border: none;
+  color: #007BBA;
+  transition: 0.3s ease;
+}
+
+.btn-light:hover {
+  background-color: #14afe3;
+  color: #fff;
+}
+
+.btn-success-custom {
+  background-color: #fbfbfb;
+  border: none;
+  color: #00a6c0;
+  transition: 0.3s ease;
+}
+
+.btn-success-custom:hover {
+  background-color: #00a6c0;
+  color: #fff;
+}
+
+
+.card {
+  border: none;
+}
+
+.btn-primary {
+  background-color: #3A9AD9; /* from your palette */
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #007BBA;
+}
+/* Subtle hover effect for cards */
+.transition-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.transition-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+/* Professional doctor card styling */
+.doctor-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 1.2rem;
+}
+.doctor-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Typography improvements */
+.doctor-card .card-body p {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  color: #444;
+}
+
+.doctor-card .card-header {
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+

@@ -1,5 +1,4 @@
 
-
 class Available < ApplicationRecord
   belongs_to :doctor
 

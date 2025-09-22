@@ -17,7 +17,9 @@ class StaffsController < ApplicationController
         render :new,status: :unprocessable_entity
       end
     end
-
+   
+    private
+    
     def staff_params
       params.require(:staff).permit(:is_permanant,:salary,:qualification,:shift)
     end
