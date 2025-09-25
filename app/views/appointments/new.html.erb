@@ -23,25 +23,26 @@
 
 
             <div class="mb-3">
-              <%= form.label :appointment_date, "Appointment Date", class: "form-label" %>
-              <%= form.date_field :appointment_date, class: "form-control", required: true %>
-              <% if @appointment.errors[:appointment_date].any? %>
+              <%= form.label :scheduled_at, "Appointment Date", class: "form-label" %>
+              <%= form.datetime_field :scheduled_at, class: "form-control", required: true %>
+              <% if @appointment.errors[:scheduled_at].any? %>
                 <div class="invalid-feedback d-block">
-                  <%= @appointment.errors[:appointment_date].first %>
+                  <%= @appointment.errors[:scheduled_at].first %>
                 </div>
               <% end %>
             </div>
 
-            <div class="mb-3">
-              <%= form.label :appointment_time, "Appointment Time", class: "form-label" %>
-              <%= form.time_field :appointment_time,
-                                  class: "form-control",
-                                  value: @appointment.appointment_time&.strftime("%H:%M"),
-                                  required: true %>
-              <% if @appointment.errors[:appointment_time].any? %>
-               <div class="text-danger"><%= @appointment.errors[:appointment_time].first %></div> 
-              <% end %>
-            </div>
+           
+
+             <div class="mb-3">
+          <%= form.label :disease, class: "form-label" %>
+          <%= form.text_field :disease, class: "form-control" %>
+
+           <%if @appointment.errors[:disease].any? %>
+          <div class="text-danger"><%= @appointment.errors[:disease].first %></div>
+          <% end %>
+
+        </div>
 
             <div class="d-grid">
               <%= form.submit "Book Appointment", class: "btn btn-primary" %>

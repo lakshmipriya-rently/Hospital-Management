@@ -4,7 +4,7 @@ class AppointmentsController < ApplicationController
       @doctor_id = params[:doctor_id]
       @appointment = Appointment.new
   end
-
+    
   def create
     @appointment = Appointment.new(appointment_params)
     @appointment.status = :pending
@@ -29,11 +29,11 @@ end
 
   def appointment_params
     params.require(:appointment).permit(
-      :appointment_date,
-      :appointment_time,
+      :scheduled_at,
       :patient_id,
       :doctor_id,
-      :status
+      :status,
+      :disease
     )
   end
 end
