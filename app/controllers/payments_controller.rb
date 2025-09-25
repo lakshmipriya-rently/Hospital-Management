@@ -10,10 +10,7 @@ class PaymentsController < ApplicationController
 
         if @payment.save
             redirect_to patient_path(@bill.appointment.patient.id)
-            puts "successfully saved"
         else
-            puts @payment.errors.full_messages
-            puts "payment data not saved"
             render :new
         end
     end

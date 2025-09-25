@@ -10,10 +10,10 @@ class User < ApplicationRecord
     validate :dob_cannot_be_in_future
     validate :name_should_not_have_other_char
 
-
+    
     before_save :capitalize_name, :clean_phone_number, :set_age
     after_create :log_user_creation
-
+    accepts_nested_attributes_for :userable
 
     private
     def dob_cannot_be_in_future
@@ -46,6 +46,6 @@ class User < ApplicationRecord
     end
 
     def capitalize_name
-       self.name = name.split.map(&:capitalize).join(" ")
+       self.name = name.titleize
     end
 end

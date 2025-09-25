@@ -10,65 +10,83 @@
         class: "btn btn-outline-secondary px-5 py-3 fs-5 rounded-3 shadow-sm fw-semibold" %>
   </div>
 
-  <!-- Doctors List -->
-  <div class="row g-4">
-    <% @doctors.each do |doctor| %>
-      <div class="col-md-6 col-lg-4">
-        <div class="card doctor-card h-100 shadow-lg border-0 rounded-4">
-          
-          <!-- Header -->
-          <div class="card-header text-white text-center fs-5 fw-bold rounded-top-4 py-3"
-               style="background: linear-gradient(135deg, #6BCBEB, #007BBA);">
-            👨‍⚕️ Doctor Profile
-          </div>
-          
-          <!-- Body -->
-          <div class="card-body fs-5 py-4">
-            <p><i class="bi bi-person-badge text-primary me-2"></i>
-              <span class="fw-semibold">Name:</span> 
-              <%= doctor.users.first&.name || "No Name Found" %>
-            </p>
-            <p><i class="bi bi-mortarboard text-primary me-2"></i>
-              <span class="fw-semibold">Experience:</span> 
-              <%= doctor.experience %> years
-            </p>
-            <p><i class="bi bi-calendar-week text-primary me-2"></i>
-              <span class="fw-semibold">Available Days:</span> 
-              <%= doctor.available&.available_days&.join(", ") || "N/A" %>
-            </p>
-            <p><i class="bi bi-clock text-primary me-2"></i>
-              <span class="fw-semibold">Time:</span> 
-              <%= doctor.available&.start_time&.strftime("%I:%M %p") || "N/A" %> – 
-              <%= doctor.available&.end_time&.strftime("%I:%M %p") || "N/A" %>
-            </p>
-
-            <p><i class="bi bi-activity text-primary me-2"></i>
-              <span class="fw-semibold">Status:</span>
-              <% if doctor.available&.is_active? %>
-                <span class="badge bg-success rounded-pill fs-6 px-4 py-2">Active</span>
-              <% else %>
-                <span class="badge bg-danger rounded-pill fs-6 px-4 py-2">Not Active</span>
-              <% end %>
-            </p>
-
-            <p><i class="bi bi-heart-pulse text-primary me-2"></i>
-              <span class="fw-semibold">Specialization:</span> 
-              <%= doctor.specializations.map(&:specialization).join(", ") %>
-            </p>
-          </div>
-          
-          <!-- Footer -->
-          <div class="card-footer bg-light text-center rounded-bottom-4 py-3">
-            <% if @patient_id.present? %>
-              <%= link_to "📖 Book Appointment", 
-                          new_appointment_path(doctor_id: doctor.id, patient_id: @patient_id), 
-                          class: "btn btn-primary w-100 fw-bold fs-5 py-3 shadow-sm rounded-3" %>
-            <% else %>
-              <span class="text-danger fs-5">⚠️ Patient not specified</span>
-            <% end %>
-          </div>
-        </div>
+  <!-- Doctors Queue List -->
+  <% @doctors.each do |doctor| %>
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between py-4 px-4 fs-5 shadow-sm rounded-4 mb-4 doctor-box">
+      
+      <!-- Doctor Profile Image -->
+      <div class="me-md-4 text-center">
+        <%= image_tag "doctor-profile", 
+                      class: "rounded-circle shadow-sm mb-3 border border-3 border-primary", 
+                      alt: "Doctor Profile", 
+                      size: "120x120" %>
       </div>
-    <% end %>
-  </div>
+
+      <!-- Doctor Info -->
+      <div class="flex-grow-1">
+        <p class="mb-2"><i class="bi bi-person-badge text-primary me-2"></i>
+          <span class="fw-semibold">Name:</span> 
+          <%= doctor.users.first&.name || "No Name Found" %>
+        </p>
+        <p class="mb-2"><i class="bi bi-envelope text-primary me-2"></i>
+          <span class="fw-semibold">Email:</span>
+          <%= doctor.users.first&.email || "N/A" %>
+        </p>
+        <p class="mb-2"><i class="bi bi-telephone text-primary me-2"></i>
+          <span class="fw-semibold">Phone:</span>
+          <%= doctor.users.first&.phone_no || "N/A" %>
+        </p>
+        <p class="mb-2"><i class="bi bi-mortarboard text-primary me-2"></i>
+          <span class="fw-semibold">Experience:</span> 
+          <%= doctor.experience %> years
+        </p>
+        <p class="mb-2"><i class="bi bi-calendar-week text-primary me-2"></i>
+          <span class="fw-semibold">Available Days:</span> 
+          <%= doctor.available&.available_days&.join(", ") || "N/A" %>
+        </p>
+        <p class="mb-2"><i class="bi bi-clock text-primary me-2"></i>
+          <span class="fw-semibold">Time:</span> 
+          <%= doctor.available&.start_time&.strftime("%I:%M %p") || "N/A" %> – 
+          <%= doctor.available&.end_time&.strftime("%I:%M %p") || "N/A" %>
+        </p>
+        <p class="mb-2"><i class="bi bi-heart-pulse text-primary me-2"></i>
+          <span class="fw-semibold">Specialization:</span> 
+          <%= doctor.specializations.map(&:specialization).join(", ") %>
+        </p>
+        <p class="mb-0"><i class="bi bi-activity text-primary me-2"></i>
+          <span class="fw-semibold">Status:</span>
+          <% if doctor.available&.is_active? %>
+            <span class="badge bg-success rounded-pill fs-6 px-3 py-2">Active</span>
+          <% else %>
+            <span class="badge bg-danger rounded-pill fs-6 px-3 py-2">Not Active</span>
+          <% end %>
+        </p>
+      </div>
+
+      <!-- Action Button -->
+      <div class="ms-md-4 text-md-end mt-3 mt-md-0">
+        <% if @patient_id.present? %>
+          <%= link_to "📖 Book Appointment", 
+                      new_appointment_path(doctor_id: doctor.id, patient_id: @patient_id), 
+                      class: "btn btn-primary fw-bold fs-5 py-3 px-4 shadow-sm rounded-3" %>
+        <% else %>
+          <span class="text-danger fs-5">⚠️ Patient not specified</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
+
+<!-- Extra CSS -->
+<style>
+  .doctor-box {
+    background: #f9fcff; /* soft hospital blue background */
+    border-left: 6px solid #007bba; /* theme color accent */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .doctor-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 186, 0.2);
+    background: #eef8ff;
+  }
+</style>

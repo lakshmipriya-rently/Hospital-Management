@@ -16,16 +16,6 @@
         </div>
 
         <div class="mb-3">
-          <%= form.label :disease, class: "form-label" %>
-          <%= form.text_field :disease, class: "form-control" %>
-
-           <%if @patient.errors[:disease].any? %>
-          <div class="text-danger"><%= @patient.errors[:disease].first %></div>
-          <% end %>
-
-        </div>
-
-        <div class="mb-3">
           <%= form.label :organ_donor, "Do you want to donate organs?", class: "form-label d-block" %>
           <div class="form-check form-check-inline">
             <%= form.radio_button :organ_donor, true, id: "organ_doner_yes", class: "form-check-input" %>
@@ -49,7 +39,7 @@
           <% end %>
         </div>
 
-        <%= form.submit "Create Patient", class: "btn btn-primary w-100" %>
+        <%= form.submit "Create Account", class: "btn btn-primary w-100" %>
 
       <% end %>
     </div>

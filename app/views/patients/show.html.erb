@@ -47,8 +47,8 @@
                   <% @appointments.each do |appointment| %>
                     <% doctor = Doctor.find(appointment.doctor_id) rescue nil %>
                     <tr>
-                      <td class="py-3"><%= appointment.appointment_date.strftime("%B %d, %Y") %></td>
-                      <td class="py-3"><%= appointment.appointment_time&.strftime("%I:%M %p") || "N/A" %></td>
+                      <td class="py-3"><%= appointment.scheduled_at&.strftime("%Y-%m-%d") %></td>
+                      <td class="py-3"><%= appointment.scheduled_at&.strftime("%I:%M %p") || "N/A" %></td>
                       <td class="py-3">
                         <% status_class = {
                           "pending" => "warning",
