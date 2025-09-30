@@ -61,7 +61,12 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem "sassc-rails"
+ 
+
 gem "devise", "~> 4.9"
+
+gem "activeadmin"
 
 
 

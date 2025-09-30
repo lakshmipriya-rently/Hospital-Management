@@ -21,20 +21,21 @@
                       alt: "Doctor Profile", 
                       size: "120x120" %>
       </div>
+    
 
       <!-- Doctor Info -->
       <div class="flex-grow-1">
         <p class="mb-2"><i class="bi bi-person-badge text-primary me-2"></i>
           <span class="fw-semibold">Name:</span> 
-          <%= doctor.users.first&.name || "No Name Found" %>
+          <%= doctor.user.name || "No Name Found" %>
         </p>
         <p class="mb-2"><i class="bi bi-envelope text-primary me-2"></i>
           <span class="fw-semibold">Email:</span>
-          <%= doctor.users.first&.email || "N/A" %>
+          <%= doctor.user.email || "N/A" %>
         </p>
         <p class="mb-2"><i class="bi bi-telephone text-primary me-2"></i>
           <span class="fw-semibold">Phone:</span>
-          <%= doctor.users.first&.phone_no || "N/A" %>
+          <%= doctor.user.phone_no || "N/A" %>
         </p>
         <p class="mb-2"><i class="bi bi-mortarboard text-primary me-2"></i>
           <span class="fw-semibold">Experience:</span> 
@@ -55,7 +56,7 @@
         </p>
         <p class="mb-0"><i class="bi bi-activity text-primary me-2"></i>
           <span class="fw-semibold">Status:</span>
-          <% if doctor.available&.is_active? %>
+          <% if doctor.active_now? %>
             <span class="badge bg-success rounded-pill fs-6 px-3 py-2">Active</span>
           <% else %>
             <span class="badge bg-danger rounded-pill fs-6 px-3 py-2">Not Active</span>

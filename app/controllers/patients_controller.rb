@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
     def index
-        @doctors = Doctor.includes(:users).all
+        @doctors = Doctor.includes(:user).all
         @patients = Patient.all
         @patient_id = params[:patient_id]
     end

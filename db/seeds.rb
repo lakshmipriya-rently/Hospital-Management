@@ -29,3 +29,4 @@ specializations = [
 specializations.each do |sp_name|
   Specialization.find_or_create_by!(specialization: sp_name)
 end
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

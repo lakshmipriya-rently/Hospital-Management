@@ -1,10 +1,14 @@
 class Appointment < ApplicationRecord
+  include Ransackable
   enum status: {
   pending: 0,
   confirmed: 1,
   cancelled: 2,
   completed: 3
 }
+  
+  scope :confirmed, ->{where(status: "confirmed")}
+  scope :pending, ->{where(status: "pending")}
 
   belongs_to :doctor
   belongs_to :patient
@@ -12,18 +16,20 @@ class Appointment < ApplicationRecord
   has_one :bill
   has_one :payment, through: :bill
 
-  validates :appointment_date, :appointment_time, presence: true
-  validate :appointment_date_must_be_in_the_future
+  validates :scheduled_at, presence: true
+  validate :scheduled_at_must_be_in_the_future
+
 
 
   private
 
-  def appointment_date_must_be_in_the_future
-     if appointment_date.blank?
-       errors.add(:appointment_date, "can't be blank")
-     elsif appointment_date < Date.today
-       errors.add(:appointment_date, "must be in the future")
-     end
+  def scheduled_at_must_be_in_the_future
+  if scheduled_at.blank?
+    errors.add(:scheduled_at, "can't be blank")
+  elsif scheduled_at < Time.current
+    errors.add(:scheduled_at, "must be in the future")
   end
+end
+
 
 end
