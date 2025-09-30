@@ -1,10 +1,15 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-    devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-    belongs_to :userable, polymorphic: true, optional: true
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
+    include Ransackable
+    devise :database_authenticatable, 
+         :recoverable, :rememberable, :validatable,:registerable
+    belongs_to :userable, polymorphic: true, optional: true
+    has_many :doctors
+    has_many :patients
 
     validates :phone_no, length: { is: 10, message: "must be exactly 10 digits" }
     validate :dob_cannot_be_in_future

@@ -1,5 +1,6 @@
 
 class Available < ApplicationRecord
+  include Ransackable
   belongs_to :doctor
 
   before_validation :clean_available_days

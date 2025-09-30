@@ -59,7 +59,7 @@
                           <%= appointment.status.capitalize %>
                         </span>
                       </td>
-                      <td class="py-3"><%= doctor&.users&.first&.name || "N/A" %></td>
+                      <td class="py-3"><%= doctor.user.name || "N/A" %></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -96,7 +96,7 @@
                     <% appointment = bill.appointment %>
                     <% payment = Payment.find_by(bill_id: bill.id) %>
                     <tr>
-                      <td class="py-3"><%= appointment.appointment_date.strftime("%B %d, %Y") %></td>
+                      <td class="py-3"><%= appointment.scheduled_at.strftime("%B %d, %Y") %></td>
                       <td class="py-3">$<%= bill.tot_amount %></td>
                       <td class="py-3">$<%= bill.paid_amount %></td>
                       <td class="py-3">

@@ -20,7 +20,7 @@
           <p class="card-text text-muted">
             Book appointments easily and keep track of your medical history.
           </p>
-          <%= link_to "Get Started", new_user_registration_path(userable_type: "Patient"), class: "btn btn-sm btn-accent" %>
+          <%= link_to "Get Started", new_user_session_path, class: "btn btn-sm btn-accent" %>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
           <p class="card-text text-muted">
             Manage patients, schedules, and provide better care with ease.
           </p>
-          <%= link_to "Join as Doctor", new_user_registration_path(userable_type: "Doctor"), class: "btn btn-sm btn-accent" %>
+          <%= link_to "Join as Doctor", new_user_session_path, class: "btn btn-sm btn-accent" %>
         </div>
       </div>
     </div>

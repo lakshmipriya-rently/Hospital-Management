@@ -1,0 +1,35 @@
+User:
+  attributes: ["id", "name", "email", "phone_no", "age", "gender", "dob", "created_at"]
+  associations: ["doctor", "patient", "appointments"]
+
+AdminUser:
+  attributes: ["id", "email", "created_at"]
+  associations: []
+
+Doctor:
+  attributes: ["id", "license_id", "experience", "type_of_degree", "salary", "created_at"]
+  associations: ["user", "appointments", "available", "patients", "specializations"]
+
+Patient:
+  attributes: ["id", "blood_group","organ_donor","address","created_at"]
+  associations: ["user", "appointments","doctors","bills"]
+
+Appointment:
+  attributes: ["id","scheduled_at", "status","disease","created_at"]
+  associations: ["user","doctor","patient","bill","payment"]
+
+Available:
+  attributes: ["id", "available_days", "start_time","end_time","is_active","created_at"]
+  associations: ["doctor"]
+
+Specialization:
+  attributes: ["id", "specialization", "created_at"]
+  associations: ["doctors"]
+
+Bill:
+  attributes: ["id","bill_date","tot_amount","paid_amount", "is_assigned","created_at"]
+  associations: ["patient"]
+ 
+Payment:
+  attributes: ["amount_to_be_paid", "bill_id", "created_at", "id", "payment_method", "status", "updated_at"]
+  associations: ["bill"]
