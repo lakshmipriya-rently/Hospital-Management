@@ -1,10 +1,16 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation
-  
+   
+  filter :email
+  filter :current_sign_in_at
+  filter :sign_in_count
+  filter :created_at
   
   index do
     selectable_column
     id_column
+    column "Name" do |user|
+       user&.name || "No user name"
+    end
     column :email
     column :current_sign_in_at
     column :sign_in_count
@@ -12,11 +18,6 @@ ActiveAdmin.register User do
     actions
   end
 
-  filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
-  
   form do |f|
     f.inputs do
       f.input :email
@@ -25,7 +26,4 @@ ActiveAdmin.register User do
     end
     f.actions
   end
- 
- 
-
 end

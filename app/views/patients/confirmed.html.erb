@@ -1,0 +1,48 @@
+<div class="row g-4 flex-grow-1 overflow-auto">
+ <%if @appointments.any? %>
+  <% @appointments.each do |appointment| %>
+    <% user = User.find_by(userable_id: @patient.id, userable_type: "Patient") %>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card rounded-4 shadow-sm border-0 h-70">
+
+        <!-- Card Header -->
+        <div class="card-header text-white rounded-top-4 p-3"
+             style="background: linear-gradient(135deg, #3A9AD9, #007BBA);">
+          <h5 class="mb-0 fw-bold">👤 <%= user.name %></h5>
+          <div class="ms-3">
+            <%= image_tag(user.gender == "male" ? "man.avif" : "women.avif", 
+                          class: "rounded-circle", 
+                          style: "width:100px; height:100px; object-fit:cover;") %>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div>
+            <p><strong>🩺 Disease:</strong> <%= appointment.disease %></p>
+            <p><strong>📞 Phone:</strong> <%= user.phone_no %></p>
+            <p><strong>📅 Date:</strong> <%= appointment.scheduled_at.strftime("%B %d, %Y") %></p>
+            <p><strong>⏰ Time:</strong> <%= appointment.scheduled_at.strftime("%I:%M %p") %></p>
+            <p>
+              <strong>📌 Status:</strong> 
+              <span class="badge 
+                <%= case appointment.status
+                    when "pending" then "bg-warning text-dark"
+                    when "confirmed" then "bg-success"
+                    when "cancelled" then "bg-danger"
+                    else "bg-info text-dark"
+                    end %>">
+                <%= appointment.status.capitalize %>
+              </span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+  <% else %>
+ <h2 class="text-primary"><b>No Confirmed Appointments!</b></h2>
+
+  <% end %>
+</div>

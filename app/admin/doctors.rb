@@ -1,6 +1,5 @@
 ActiveAdmin.register Doctor do
-
-
+ 
   scope :all
   scope :inactive_now
   scope :active_now
@@ -34,6 +33,24 @@ end
   end
   column :created_at
   actions
+end
+
+action_item :view, only: :show do
+  link_to 'View on site', doctor_path(resource.user)
+end
+
+form do |f|
+  f.semantic_errors
+  f.inputs
+  f.inputs do
+    f.has_many :user, heading: "User Details", allow_destroy: true do |a|
+      a.input :name
+      a.input :email
+      a.input :password
+      a.input :password_confirmation
+    end
+  end
+  f.actions
 end
 
 

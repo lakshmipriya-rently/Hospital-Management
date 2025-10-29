@@ -1,0 +1,110 @@
+
+/* Doctor's Appointments Page */
+body{
+    background-color: #007BBA;
+}
+/* Page Heading */
+h1.display-4 {
+  color: #16596d; /* Deep professional blue */
+  font-weight: 700;
+  border-bottom: 5px solid #3A9AD9;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Card Container */
+.card {
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+/* Card Hover Effect */
+.card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Header */
+.card-header {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background-color: #1378d6; /* very light blue */
+  color: #16596d; /* deep professional blue */
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  text-align: center;
+}
+
+
+.card-header h5 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: #114b62; /* ensure the text is readable */
+}
+
+/* Card Body */
+.card-body {
+  padding: 1.5rem;
+  background-color: #f9fafd;
+  text-align: left;
+}
+
+.card-body p {
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+  color: #495057;
+}
+
+.card-body strong {
+  color: #3A9AD9;
+}
+
+/* Status Badges */
+.badge {
+  font-size: 0.85rem;
+  padding: 0.45em 0.75em;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Input Group for Status Update */
+.input-group .form-select {
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-color: #ced4da;
+}
+
+.input-group button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: none;
+  background-color: #3A9AD9;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.input-group button:hover {
+  background-color: #007BBA;
+  transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card-body p {
+    font-size: 0.9rem;
+  }
+
+  .card-header h5 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  h1.display-4 {
+    font-size: 2rem;
+  }
+}
+
+

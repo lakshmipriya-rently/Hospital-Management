@@ -1,0 +1,105 @@
+<div class="container mt-5 mb-4">
+  <h2 class="fw-bold mb-3 text-center text-primary">🏥 eDoc</h2>
+  <h4 class="text-center text-secondary mb-5">Payment History</h4>
+
+  <div class="row justify-content-center">
+    <% @payments.order(:created_at).each do |payment| %>
+      <% bill = payment.bill %>
+      <% payments_upto_now = @payments.where("created_at <= ?", payment.created_at) %>
+      <% total_paid_so_far = payments_upto_now.sum(:amount_to_be_paid) %>
+      <% remaining_amount = bill.tot_amount - total_paid_so_far %>
+
+      <% status_class =
+        if remaining_amount <= 0
+          "card-paid"
+        else
+          "card-pending"
+        end
+      %>
+
+      <div class="col-md-8 mb-3">
+        <div class="card payment-card <%= status_class %> shadow-sm border-0 rounded-4 p-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-1">Bill ID: <%= bill.id %></h6>
+              <h5 class="fw-bold text-dark mb-1">
+                  <%= number_to_currency(payment.amount_to_be_paid) %>
+              </h5>
+              <small class="text-secondary">
+                Paid on <%= payment.created_at.strftime("%d %b %Y") %>
+              </small>
+            </div>
+
+            <div class="text-end">
+              <% if remaining_amount <= 0 %>
+                <span class="badge bg-success px-3 py-2">Paid</span>
+              <% else %>
+                <span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+              <% end %>
+            </div>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="d-flex justify-content-between text-secondary small">
+            <div>
+              <span class="fw-semibold">Total Paid So Far:</span>
+              <span class="text-dark ms-1"><%= number_to_currency(total_paid_so_far) %></span>
+            </div>
+            <div>
+              <span class="fw-semibold">Remaining:</span>
+              <span class="text-dark ms-1"><%= number_to_currency(remaining_amount) %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <footer class="text-center mt-4 text-muted small">
+    © 2025 Hospital Management. All rights reserved.
+  </footer>
+</div>
+
+
+<style>
+body {
+  background-color: #f8f9fa;
+}
+
+.payment-card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.payment-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.card-paid {
+  background: linear-gradient(135deg, #d8f8e4 0%, #f1fff6 100%);
+  border-left: 5px solid #28a745;
+}
+
+
+.card-pending {
+  background: linear-gradient(135deg, #fff5d1 0%, #fffbea 100%);
+  border-left: 5px solid #ffc107;
+}
+
+
+.card-default {
+  background: #f9f9f9;
+  border-left: 5px solid #adb5bd;
+}
+
+
+.card h5 {
+  font-size: 1.2rem;
+}
+
+.card small {
+  font-size: 0.85rem;
+}
+</style>

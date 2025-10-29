@@ -1,0 +1,119 @@
+<div class="surgery-container">
+  <h1>Surgery</h1>
+
+  <div class="surgery-card">
+    <h2 class="surgery-name"><%= @surgery.name %></h2>
+    <p class="surgery-description"><%= @surgery.description %></p>
+    <p class="surgery-doctor">Doctor: <%= @surgery.doctor.user.name %></p>
+
+    <div class="btn-group">
+      <% if user_signed_in? && current_user.userable_type == "Patient" %>
+        <%= button_to "Book Appointment", book_appointment_surgery_path(@surgery), method: :post, class: "btn btn-primary" %>
+      <% end %>
+
+      <% if user_signed_in? && current_user.userable_type == "Doctor" && @surgery.doctor == current_user.userable %>
+        <%= button_to "Delete Surgery", surgery_path(@surgery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Surgery Page Container */
+.surgery-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #f4f7fa; /* Light background */
+  min-height: 80vh;
+}
+
+/* Page Heading */
+.surgery-container h1 {
+  color: #3A9AD9;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 3px solid #3A9AD9;
+  padding-bottom: 0.5rem;
+}
+
+/* Surgery Card */
+.surgery-card {
+  max-width: 600px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Surgery Name */
+.surgery-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #16596d;
+  margin-bottom: 1rem;
+}
+
+/* Description & Doctor */
+.surgery-description,
+.surgery-doctor {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 0.8rem;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background-color: #3A9AD9;
+  border-color: #3A9AD9;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #007BBA;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #a71d2a;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .surgery-card {
+    padding: 1.5rem;
+  }
+
+  .surgery-name {
+    font-size: 1.5rem;
+  }
+}
+</style>

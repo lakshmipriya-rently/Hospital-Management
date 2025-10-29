@@ -1,0 +1,42 @@
+<div class="form-style">
+<%= form_with(model: @doctor, local: true) do |u| %>
+  <!-- Nested Availability -->
+  <%= u.fields_for :available do |a| %>
+    <!-- Available Days -->
+    <div class="mb-4">
+      <label class="form-label fw-semibold">Available Days</label>
+      <div class="d-flex flex-wrap gap-3">
+        <% Date::DAYNAMES.each do |day| %>
+          <div class="form-check">
+            <%= check_box_tag "doctor[available_attributes][available_days][]", day, @doctor&.available&.available_days&.include?(day), class: "form-check-input", id: "available_days_#{day}" %>
+            <%= label_tag "available_days_#{day}", day, class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Start & End Time (Single Row) -->
+    <div class="d-flex gap-3 align-items-end mb-4">
+      <div class="flex-fill">
+        <%= a.label :start_time, class: "form-label fw-semibold" %>
+        <%= a.time_select :start_time, { default: @doctor.available&.start_time || Time.current, prompt: { hour: 'Hour', minute: 'Minute' } }, class: "form-select form-select-sm" %>
+      </div>
+      <div class="flex-fill">
+        <%= a.label :end_time, class: "form-label fw-semibold" %>
+        <%= a.time_select :end_time, { default: @doctor.available&.end_time || Time.current, prompt: { hour: 'Hour', minute: 'Minute' } }, class: "form-select form-select-sm" %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= u.submit "Save", class: "btn btn-primary" %>
+<% end %>
+</div>
+<style>
+   .form-style{
+      width: 50%;
+      margin-left: 25%;
+      box-shadow: 10px 10px 10px 15px rgba(0.1, 0.1, 0.1, 0.1);
+      padding: 4rem;
+
+   }
+</style>

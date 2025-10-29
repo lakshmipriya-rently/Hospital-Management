@@ -1,3 +1,4 @@
+
 <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
   <div class="card shadow-lg p-4 rounded-4" style="max-width: 900px; width: 100%;">
     <h1 class="mb-4 text-center text-primary fw-bold">Create Account</h1>
@@ -163,6 +164,109 @@
     <% end %>
   </div>
 </div>
+<style>
+body {
+  background-color: #f8f9fa;
+}
+
+.btn-primary {
+  background-color: #3A9AD9;
+  border-color: #3A9AD9;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #007BBA;
+  border-color: #007BBA;
+  color: #fff;
+}
+
+.btn-light {
+  background-color: #fbfbfb;
+  border: none;
+  color: #007BBA;
+}
+
+.btn-light:hover {
+  background-color: #14afe3;
+  color: #fff;
+}
+
+.card.shadow-lg {
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card h1 {
+  color: #3A9AD9;
+}
+
+.form-label.fw-semibold {
+  font-weight: 600;
+}
+
+.role-block {
+  background-color: #fdfdfd;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e0e0e0;
+  margin-top: 1rem;
+}
+
+.role-block h4 {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.form-check-inline {
+  margin-right: 1rem;
+}
+
+.form-check-input:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.btn-primary.btn-lg {
+  background-color: #3A9AD9;
+  border-color: #3A9AD9;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary.btn-lg:hover {
+  background-color: #007BBA;
+  border-color: #007BBA;
+}
+
+.form-select-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-text.text-muted {
+  font-size: 0.8rem;
+}
+
+.d-flex.flex-wrap.gap-3 .form-check {
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .role-block {
+    padding: 1rem;
+  }
+
+  .form-check-inline {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}
+</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", setupRoleFields);

@@ -1,0 +1,126 @@
+.hero-section {
+  background-color: #64b0e3; /* primary color */
+  color: #fff;
+  padding: 8rem 1rem; /* increased vertical height */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-section .container {
+  max-width: 900px;
+}
+
+.hero-section .text-accent {
+  color:#16596d /* accent color */
+}
+
+.hero-section .lead {
+  font-size: 1.25rem;
+  color: #e6f0fa;
+  margin-bottom: 2.5rem;
+}
+
+.hero-section .btn-accent {
+  background-color: #fff;
+  color: #4ca4e0;
+  border: 1px solid #fff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.hero-section .btn-accent:hover {
+  background-color: #007BBA;
+  color: #fff;
+  border-color: #007BBA;
+}
+
+.hero-section .btn-outline-light {
+  color: #fff;
+  border-color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+
+.hero-section .btn-outline-light:hover {
+  background-color: #fff;
+  color: #3A9AD9;
+  border-color: #fff;
+}
+
+/* Feature Cards */
+.feature-card {
+  background-color: #fdfdfd;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card .text-accent {
+  color: #3A9AD9;
+}
+
+.feature-card .btn-accent {
+  background-color: #3A9AD9;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.feature-card .btn-accent:hover {
+  background-color: #007BBA;
+  color: #fff;
+}
+
+/* Typography */
+.display-3 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.card-title.fw-bold {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-text.text-muted {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .hero-section {
+    padding: 6rem 1rem;
+  }
+  .hero-section .display-3 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 4rem 1rem;
+  }
+  .hero-section .display-3 {
+    font-size: 2rem;
+  }
+  .hero-section .lead {
+    font-size: 1rem;
+  }
+}

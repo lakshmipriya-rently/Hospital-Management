@@ -1,25 +1,23 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-   # before_action :configure_sign_up_params, only: [:create]
-   # before_action :configure_account_update_params, only: [:update]
+   before_action :configure_sign_up_params, only: [:create]
+  # before_action :configure_account_update_params, only: [:update]
 
-   # GET /resource/sign_up
-   # def new
-   # end
-
-     before_action :configure_permitted_parameters, if: :devise_controller?
-
+  # GET /resource/sign_up
+  
   def new
     build_resource({})
-  @doctor  = Doctor.new
-  @doctor.build_available
-  @doctor.specializations.build
-  @patient = Patient.new
-  respond_with resource
+    @doctor = Doctor.new
+    @doctor.build_available
+    @doctor.specializations.build
+    @patient = Patient.new
+    respond_with resource
   end
-   # POST /resource
-    def create
+
+  # POST /resource
+  
+  def create
     build_resource(sign_up_params.except(:userable_attributes))
     case params[:user][:userable_type]
     when "Doctor"
@@ -31,6 +29,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.save
     yield resource if block_given?
     if resource.persisted?
+      UserMailer.welcome_email(resource).deliver_now
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
@@ -47,85 +46,83 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-   # GET /resource/edit
-   # def edit
-   #   super
-   # end
+  # GET /resource/edit
+  # def edit
+  #   super
+  # end
 
-   # PUT /resource
-   # def update
-   #   super
-   # end
+  # PUT /resource
+  # def update
+  #   super
+  # end
 
-   # DELETE /resource
-   # def destroy
-   #   super
-   # end
+  # DELETE /resource
+  # def destroy
+  #   super
+  # end
 
-   # GET /resource/cancel
-   # Forces the session data which is usually expired after sign
-   # in to be expired now. This is useful if the user wants to
-   # cancel oauth signing in/up in the middle of the process,
-   # removing all OAuth session data.
-   # def cancel
-   #   super
-   # end
+  # GET /resource/cancel
+  # Forces the session data which is usually expired after sign
+  # in to be expired now. This is useful if the user wants to
+  # cancel oauth signing in/up in the middle of the process,
+  # removing all OAuth session data.
+  # def cancel
+  #   super
+  # end
 
-   # protected
+  # protected
 
-   # If you have extra params to permit, append them to the sanitizer.
-   # def configure_sign_up_params
-   #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-   # end
+  # If you have extra params to permit, append them to the sanitizer.
 
-   # If you have extra params to permit, append them to the sanitizer.
-   # def configure_account_update_params
-   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-   # end
+   def configure_sign_up_params
+      devise_parameter_sanitizer.permit(:sign_up, keys: [
+                                                  :name, :phone_no, :dob, :gender, :userable_type,
+                                                  :password,:password_confirmation,
+                                                  userable_attributes: [
+                                                    :license_id, :experience, :type_of_degree, :salary,
+                                                    :blood_group, :organ_donor, :address,
+                                                    { specialization_ids: [] },
+                                                    { available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }] },
+                                                  ],
+                                                ])
+   end
 
-   # The path used after sign up.
-   # def after_sign_up_path_for(resource)
-   #    case resource.userable_type
-   #    when "Doctor"
-   #    new_doctor_path(user_id: resource.id)
-   #    when "Patient"
-   #    new_patient_path(user_id: resource.id)
-   #    when "Staff"
-   #    new_staff_path(user_id: resource.id)
-   #    else
-   #    root_path
-   #    end
-   # end
+  # If you have extra params to permit, append them to the sanitizer.
+  # def configure_account_update_params
+  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
+  # end
+
+  # The path used after sign up.
+  # def after_sign_up_path_for(resource)
+  #    case resource.userable_type
+  #    when "Doctor"
+  #    new_doctor_path(user_id: resource.id)
+  #    when "Patient"
+  #    new_patient_path(user_id: resource.id)
+  #    when "Staff"
+  #    new_staff_path(user_id: resource.id)
+  #    else
+  #    root_path
+  #    end
+  # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
 
-   def configure_permitted_parameters
-  devise_parameter_sanitizer.permit(:sign_up, keys: [
-    :name, :phone_no, :dob, :gender, :userable_type,
-    userable_attributes: [
-      :license_id, :experience, :type_of_degree, :salary,
-      :blood_group, :organ_donor, :address,
-      { specialization_ids: [] },
-      { available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }] }
-    ]
-  ])
-end
 
-def patient_params
-  params.require(:user).require(:userable_attributes).permit(
+  def patient_params
+    params.require(:user).require(:userable_attributes).permit(
       :blood_group, :organ_donor, :address
     )
-end
+  end
 
-def doctor_params
-   params.require(:user).require(:userable_attributes).permit(
+  def doctor_params
+    params.require(:user).require(:userable_attributes).permit(
       :license_id, :experience, :type_of_degree, :salary,
       { specialization_ids: [] },
       { available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }] }
-   )
-end
-
+    )
+  end
 end
