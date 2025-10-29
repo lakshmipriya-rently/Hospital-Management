@@ -1,4 +1,3 @@
-
 class Available < ApplicationRecord
   include Ransackable
   belongs_to :doctor

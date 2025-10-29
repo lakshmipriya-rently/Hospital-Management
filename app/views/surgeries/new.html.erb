@@ -1,0 +1,89 @@
+<h1>Add Surgery</h1>
+
+<%= form_with model: @surgery, local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <%= f.submit "Add Surgery", class: "btn btn-success" %>
+<% end %>
+<style>
+/* Add Surgery Page */
+
+/* Page Heading */
+h1 {
+  text-align: center;
+  color: #3A9AD9; /* Primary blue */
+  font-weight: 700;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #3A9AD9;
+  padding-bottom: 0.5rem;
+}
+
+/* Form Container */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f9fafd; /* Light background */
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+form:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+}
+
+/* Form Labels */
+form label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+/* Form Inputs */
+form .form-control {
+  border-radius: 0.75rem;
+  border: 1px solid #ced4da;
+  padding: 0.6rem 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form .form-control:focus {
+  border-color: #3A9AD9;
+  box-shadow: 0 0 0 0.2rem rgba(58, 154, 217, 0.25);
+}
+
+/* Submit Button */
+form .btn-success {
+  background-color: #3A9AD9;
+  border-color: #3A9AD9;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form .btn-success:hover {
+  background-color: #007BBA;
+  transform: translateY(-2px);
+  border-color: #007BBA;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  form {
+    padding: 1.5rem;
+  }
+}
+
+</style>

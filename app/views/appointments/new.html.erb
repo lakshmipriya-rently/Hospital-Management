@@ -1,30 +1,33 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white text-center">
-          <h4 class="mb-0">Book New Appointment</h4>
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header text-center" style="background-color: #5dade2; color: #fff; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+          <h4 class="mb-0 fw-bold">Book New Appointment</h4>
         </div>
+
         <% if @appointment.errors.any? %>
-  <div class="alert alert-danger">
-    <h5><%= pluralize(@appointment.errors.count, "error") %> prevented this form from saving:</h5>
-    <ul>
-      <% @appointment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-        <div class="card-body">
-         <%= form_with model: @appointment, local: true, html: { class: "needs-validation" } do |form| %>
+          <div class="alert alert-danger rounded-3 m-3">
+            <h5 class="mb-2"><%= pluralize(@appointment.errors.count, "error") %> prevented this form from saving:</h5>
+            <ul class="mb-0">
+              <% @appointment.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-           <%= form.hidden_field :patient_id, value: @patient_id %>
-           <%= form.hidden_field :doctor_id, value: @doctor_id %>
+        <div class="card-body p-4">
+          <%= form_with model: @appointment, local: true, html: { class: "needs-validation" } do |form| %>
 
+           
+            <%= hidden_field_tag "appointment[surgery_id]", params[:surgery_id] %>  
+            <%= hidden_field_tag "appointment[doctor_id]", params[:doctor_id] %>
+            <%= hidden_field_tag "appointment[patient_id]", params[:patient_id] %>  
 
             <div class="mb-3">
-              <%= form.label :scheduled_at, "Appointment Date", class: "form-label" %>
-              <%= form.datetime_field :scheduled_at, class: "form-control", required: true %>
+              <%= form.label :scheduled_at, "Appointment Date", class: "form-label fw-semibold" %>
+              <%= form.datetime_field :scheduled_at, class: "form-control border rounded-3", required: true %>
               <% if @appointment.errors[:scheduled_at].any? %>
                 <div class="invalid-feedback d-block">
                   <%= @appointment.errors[:scheduled_at].first %>
@@ -32,25 +35,118 @@
               <% end %>
             </div>
 
-           
-
-             <div class="mb-3">
-          <%= form.label :disease, class: "form-label" %>
-          <%= form.text_field :disease, class: "form-control" %>
-
-           <%if @appointment.errors[:disease].any? %>
-          <div class="text-danger"><%= @appointment.errors[:disease].first %></div>
-          <% end %>
-
-        </div>
+            <% if @surgery.blank? %>
+            
+            <div class="mb-3">
+              <%= form.label :disease, class: "form-label fw-semibold" %>
+              <%= form.text_field :disease, class: "form-control border rounded-3" %>
+              <% if @appointment.errors[:disease].any? %>
+                <div class="text-danger mt-1"><%= @appointment.errors[:disease].first %></div>
+              <% end %>
+            </div>
+            <% else %>
+                <%= form.hidden_field :disease, value: "surgery" %>
+            <% end %>
 
             <div class="d-grid">
-              <%= form.submit "Book Appointment", class: "btn btn-primary" %>
+              <%= form.submit "Book Appointment", class: "btn btn-info text-white fw-bold py-2 rounded-3" %>
             </div>
-  
+
           <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+<style>
+/* Appointment Form Page */
+
+/* Card */
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: none;
+  background-color: #ffffff; /* subtle white background */
+}
+
+/* Card Header */
+.card-header {
+  background-color: #5dade2; /* lighter professional blue */
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.25rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1rem 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Card Body */
+.card-body {
+  padding: 1.5rem;
+  background-color: #f9fafc; /* soft off-white background */
+}
+
+/* Labels */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #5dade2;
+  box-shadow: 0 0 0 0.2rem rgba(93, 173, 226, 0.25);
+}
+
+/* Submit Button */
+.btn-info {
+  background-color: #5dade2;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-info:hover {
+  background-color: #3498db;
+  transform: translateY(-2px);
+}
+
+/* Alert Errors */
+.alert-danger {
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Invalid Feedback */
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-header {
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+  }
+}
+
+</style>
