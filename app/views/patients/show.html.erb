@@ -137,7 +137,9 @@
                 </td>
                 <td class="py-3">
                   <% remaining_amount = bill.tot_amount - bill.paid_amount %>
-                  <% if remaining_amount > 0 %>
+                   <% if appointment.scheduled_at < Date.today %>
+                    <span> appointment expired </span>
+                  <% elsif remaining_amount > 0 %>
                     <%= link_to "Pay Bill",
                         new_payment_path(bill_id: bill.id, patient_id: @patient.id),
                         class: "btn btn-outline-primary btn-sm fs-6 px-4 py-2" %>
@@ -150,6 +152,7 @@
                         payment_path(bill_id: bill.id),
                         class: "btn btn-outline-primary btn-sm fs-6 px-4 py-2" %>
                 </td>
+               
               </tr>
             <% end %>
           </tbody>

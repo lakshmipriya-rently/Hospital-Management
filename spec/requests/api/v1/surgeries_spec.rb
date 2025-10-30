@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Surgeries", type: :request do
   let(:doctor_profile) { create(:doctor) }
@@ -51,8 +51,8 @@ RSpec.describe "Api::V1::Surgeries", type: :request do
         surgery: {
           name: "Appendectomy",
           description: "Removal of appendix",
-          doctor_id: doctor_profile.id
-        }
+          doctor_id: doctor_profile.id,
+        },
       }
     end
 

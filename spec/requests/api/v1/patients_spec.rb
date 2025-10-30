@@ -16,7 +16,6 @@ RSpec.describe "Api::V1::Patients", type: :request do
     create(:doorkeeper_access_token, resource_owner_id: other_patient_user.id, scopes: "public")
   end
 
- 
   let(:headers_patient) do
     {
       "Authorization" => "Bearer #{patient_token.token}",
@@ -40,13 +39,11 @@ RSpec.describe "Api::V1::Patients", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-
     it "returns all patients" do
       get "/api/v1/patients", headers: headers_patient
       expect(json_response.size).to eq(Patient.count)
     end
   end
-
 
   describe "GET /api/v1/patients/:id" do
     it "returns forbidden if accessing another patient" do
@@ -58,7 +55,7 @@ RSpec.describe "Api::V1::Patients", type: :request do
       get "/api/v1/patients/#{patient_user.userable.id}", headers: headers_other_patient
       expect(json_response["error"]).to include("You're not authorized to do that!")
     end
-    
+
     it "returns patient details if authorized" do
       get "/api/v1/patients/#{patient_user.userable.id}", headers: headers_patient
       expect(response).to have_http_status(:ok)
@@ -105,7 +102,7 @@ RSpec.describe "Api::V1::Patients", type: :request do
       expect(response).to have_http_status(:forbidden)
     end
 
-     it "returns forbidden if updating another patient" do
+    it "returns forbidden if updating another patient" do
       patch "/api/v1/patients/#{patient_user.userable.id}", params: valid_params, headers: headers_other_patient
       expect(json_response["error"]).to include("You're not authorized to do that!")
     end
@@ -119,9 +116,8 @@ RSpec.describe "Api::V1::Patients", type: :request do
   end
 
   describe "GET /api/v1/patients/:id/confirmed" do
-
     let!(:confirmed_appointment) do
-       create(:appointment, patient: patient_user.userable, status: "confirmed")
+      create(:appointment, patient: patient_user.userable, status: "confirmed")
     end
 
     it "returns confirmed appointments for authorized patient" do
@@ -129,12 +125,10 @@ RSpec.describe "Api::V1::Patients", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-
     it "returns confirmed appointments for authorized patient" do
       get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_patient
       expect(json_response["appointments"]).to be_an(Array)
     end
-
 
     it "returns confirmed appointments for authorized patient" do
       get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_patient
@@ -142,14 +136,13 @@ RSpec.describe "Api::V1::Patients", type: :request do
     end
 
     it "returns forbidden if accessing another patient's confirmed appointments" do
-      get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_other_patient  
+      get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_other_patient
       expect(response).to have_http_status(:forbidden)
     end
 
     it "returns forbidden if accessing another patient's confirmed appointments" do
-      get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_other_patient 
+      get "/api/v1/patients/#{patient_user.userable.id}/confirmed", headers: headers_other_patient
       expect(json_response["error"]).to include("You can't access other records")
     end
-
   end
 end

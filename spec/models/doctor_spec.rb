@@ -76,7 +76,7 @@ RSpec.describe Doctor, type: :model do
     end
 
     it "returns true if doctor is currently active" do
-      create(:available, doctor: doctor, start_time: "09:15", end_time: "18:30")
+      create(:available, doctor: doctor, start_time:"09:15", end_time: "18:00")
       doctor.reload
       expect(doctor.active_now?).to eq(true)
     end

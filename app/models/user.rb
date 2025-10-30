@@ -28,17 +28,15 @@ class User < ApplicationRecord
     return unless dob.present?
     today = Date.today
     self.age = today.year - dob.year
-    self.age -= 1 if dob.to_date.change(year: today.year) > today
+    year = today.year
+    month = dob.month
+    day = dob.day  
+    birthday_this_year = Date.new(year, month, day)
+  
+    self.age -= 1 if birthday_this_year > today
   end
 
-  def doctor?
-    userable_type == "Doctor"
-  end
-
-  def patient?
-    userable_type == "Patient"
-  end
-
+  
   def name_should_not_have_other_char
     if name.present? && name !~ /\A[a-zA-Z\s]+\z/
       errors.add(:name, "should only contain alphabets and spaces")

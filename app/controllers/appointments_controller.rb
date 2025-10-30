@@ -18,7 +18,7 @@ class AppointmentsController < ApplicationController
     if @appointment.save
       redirect_to patient_path(@appointment.patient), notice: "Appointment booked successfully."
     else
-      render :new,status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -69,7 +69,7 @@ class AppointmentsController < ApplicationController
   end
 
   def authenticate_doctor!
-    unless current_user.userable_type == "Doctor"
+    unless current_user&.userable_type == "Doctor"
       redirect_to new_user_session_path, alert: "You must log in as a doctor to update an appointment."
     end
   end

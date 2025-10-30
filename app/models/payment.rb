@@ -14,8 +14,6 @@ class Payment < ApplicationRecord
   scope :un_paid, -> { where(status: Payment.statuses[:un_paid]) }
   scope :paid, -> { where(status: Payment.statuses[:paid]) }
 
-
-
   private
 
   def cannot_overpay

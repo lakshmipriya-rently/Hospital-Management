@@ -6,11 +6,19 @@
     <p class="surgery-description"><%= @surgery.description %></p>
     <p class="surgery-doctor">Doctor: <%= @surgery.doctor.user.name %></p>
 
+     <div class="text-center">
+        <%= link_to "Back to Surgeries", surgeries_path, class: "btn btn-outline-primary rounded-pill px-4 py-2" %>
+      </div>
+
     <div class="btn-group">
       <% if user_signed_in? && current_user.userable_type == "Patient" %>
         <%= button_to "Book Appointment", book_appointment_surgery_path(@surgery), method: :post, class: "btn btn-primary" %>
       <% end %>
-
+       <% if user_signed_in? && current_user.userable_type == "Doctor" && @surgery.doctor == current_user.userable %>
+          <%= link_to edit_surgery_path(@surgery), class: "btn btn-warning w-100 mt-3" do %>
+            <i class="bi bi-pencil-fill me-1"></i> Edit Sugery
+          <% end %>
+      <% end %>
       <% if user_signed_in? && current_user.userable_type == "Doctor" && @surgery.doctor == current_user.userable %>
         <%= button_to "Delete Surgery", surgery_path(@surgery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
       <% end %>

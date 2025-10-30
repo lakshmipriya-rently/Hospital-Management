@@ -21,6 +21,7 @@ RSpec.describe User, type: :model do
       expect(user.errors[:email]).to include("can't be blank")
     end
 
+
     it "validates uniqueness of email" do
       FactoryBot.create(:user, email: "user@example.com")
       duplicate = FactoryBot.build(:user, email: "user@example.com")

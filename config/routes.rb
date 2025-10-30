@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get "surgeries/show"
   get "surgeries/new"
 
+  post "/surgeries/:id/edit", to: "surgeries#edit", as: "edit_surgery"
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -13,7 +15,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: "users/registrations" }
 
-  resources :surgeries, only: [:index, :show, :new, :create, :destroy] do
+  resources :surgeries, only: [:index, :show, :new, :create, :destroy,:edit,:update] do
     post :book_appointment, on: :member
     resources :appointments, only: [:new, :create, :update]
   end
@@ -35,7 +37,7 @@ Rails.application.routes.draw do
           get :confirmed
         end
       end
-      resources :surgeries, only: [:index, :show, :create, :destroy]
+      resources :surgeries, only: [:index, :show, :create, :destroy,:edit,:update]
     end
   end
 

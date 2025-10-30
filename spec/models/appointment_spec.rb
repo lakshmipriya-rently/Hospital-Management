@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Appointment, type: :model do
   let(:doctor) { create(:doctor, :appointment) }
   let(:patient) { create(:patient, :appointment) }
+  let(:appointment) { create(:appointment, doctor: doctor, patient: patient) }
 
   context "validations" do
     it "validates scheduled_at presence" do
@@ -54,6 +55,22 @@ RSpec.describe Appointment, type: :model do
     it "belongs_to" do
       association = Appointment.reflect_on_association(:surgery)
       expect(association.macro).to eq :belongs_to
+    end
+  end
+
+  describe '#calculate_total_amount (private)' do
+    let(:appointment1) { build(:appointment,surgery_id: nil) }
+    let(:surgery) { create(:surgery)}
+    let(:appointment2) { build(:appointment,surgery: surgery) }
+
+    it 'returns 500 when surgery_id is nil' do
+      result = appointment1.send(:calculate_total_amount)
+      expect(result).to eq(500)
+    end
+
+    it 'returns 10000 when surgery_id is present' do
+      result = appointment2.send(:calculate_total_amount)
+      expect(result).to eq(10000)
     end
   end
 end

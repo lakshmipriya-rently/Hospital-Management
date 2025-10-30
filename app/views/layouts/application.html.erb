@@ -129,6 +129,16 @@ main > .container-fluid {
             <%= link_to "Add Surgery", new_surgery_path, class: "nav-link" %>
           </li>
         <% end %>
+        <% if user_signed_in? && current_user&.userable_type == "Doctor" || current_user&.userable_type == "Patient" %>
+          <li class="nav-item">
+            <%= link_to "View Doctors", patients_path, class: "nav-link" %>
+          </li>
+        <% end %>
+        <% if user_signed_in? && current_user&.userable_type == "Doctor" || current_user&.userable_type == "Patient" %>
+          <li class="nav-item">
+            <%= link_to "Profile", patient_path(current_user&.userable.id), class: "nav-link" %>
+          </li>
+        <% end %>
       </ul>
 
       <div class="d-flex">
