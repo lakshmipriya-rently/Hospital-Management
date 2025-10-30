@@ -1,25 +1,31 @@
-<h1>Add Surgery</h1>
+<div class="add-surgery-page">
+  <h1>Add Surgery</h1>
 
-<%= form_with model: @surgery, local: true do |f| %>
-  <div class="mb-3">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control" %>
-  </div>
+  <%= form_with model: @surgery, local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
 
-  <div class="mb-3">
-    <%= f.label :description %>
-    <%= f.text_area :description, class: "form-control" %>
-  </div>
+    <div class="mb-3">
+      <%= f.label :description %>
+      <%= f.text_area :description, class: "form-control" %>
+    </div>
 
-  <%= f.submit "Add Surgery", class: "btn btn-success" %>
-<% end %>
+    <%= f.submit "Add Surgery", class: "btn btn-success" %>
+  <% end %>
+</div>
+
 <style>
-/* Add Surgery Page */
+/* === Scoped only to Add Surgery Page === */
+.add-surgery-page {
+  padding: 2rem 0;
+}
 
 /* Page Heading */
-h1 {
+.add-surgery-page h1 {
   text-align: center;
-  color: #3A9AD9; /* Primary blue */
+  color: #3A9AD9;
   font-weight: 700;
   margin-bottom: 2rem;
   border-bottom: 3px solid #3A9AD9;
@@ -27,43 +33,40 @@ h1 {
 }
 
 /* Form Container */
-form {
+.add-surgery-page form {
   max-width: 600px;
   margin: 0 auto;
-  background-color: #f9fafd; /* Light background */
+  background-color: #f9fafd;
   padding: 2rem;
   border-radius: 1.25rem;
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-form:hover {
+.add-surgery-page form:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 30px rgba(0,0,0,0.12);
 }
 
-/* Form Labels */
-form label {
+/* Labels, Inputs, Button (Scoped) */
+.add-surgery-page form label {
   font-weight: 600;
   color: #495057;
-  margin-bottom: 0.5rem;
 }
 
-/* Form Inputs */
-form .form-control {
+.add-surgery-page form .form-control {
   border-radius: 0.75rem;
   border: 1px solid #ced4da;
   padding: 0.6rem 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form .form-control:focus {
+.add-surgery-page form .form-control:focus {
   border-color: #3A9AD9;
   box-shadow: 0 0 0 0.2rem rgba(58, 154, 217, 0.25);
 }
 
-/* Submit Button */
-form .btn-success {
+.add-surgery-page form .btn-success {
   background-color: #3A9AD9;
   border-color: #3A9AD9;
   color: #fff;
@@ -73,17 +76,15 @@ form .btn-success {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-form .btn-success:hover {
+.add-surgery-page form .btn-success:hover {
   background-color: #007BBA;
   transform: translateY(-2px);
   border-color: #007BBA;
 }
 
-/* Responsive */
 @media (max-width: 576px) {
-  form {
+  .add-surgery-page form {
     padding: 1.5rem;
   }
 }
-
 </style>

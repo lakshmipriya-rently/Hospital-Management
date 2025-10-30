@@ -18,7 +18,7 @@ class Doctor < ApplicationRecord
             Time.current.strftime("%H:%M"),
             Time.current.strftime("%H:%M")
           )
-        }
+  }
 
   scope :inactive_now, -> {
           joins(:available).where(

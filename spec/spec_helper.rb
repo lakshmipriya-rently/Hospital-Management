@@ -3,6 +3,11 @@
 # The generated `.rspec` file contains `--require spec_helper` which will cause
 # this file to always be loaded, without a need to explicitly require it in any
 # files.
+# Start SimpleCov as early as possible so coverage is recorded even when
+# tests only `require 'spec_helper'` (some request specs do this implicitly).
+require 'simplecov'
+SimpleCov.start 'rails'
+
 #
 # Given that it is always loaded, you are encouraged to keep this file as
 # light-weight as possible. Requiring heavyweight dependencies from this file

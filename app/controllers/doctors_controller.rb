@@ -35,6 +35,7 @@ class DoctorsController < ApplicationController
 
   def check_if_appointment_expired
     @appointments = @doctor.appointments.order(scheduled_at: :asc)
+    @appointments = @doctor.appointments.includes(:bill)
     if @appointments.any?
       @appointments.each do |appointment|
         if appointment.scheduled_at.to_date < Date.today

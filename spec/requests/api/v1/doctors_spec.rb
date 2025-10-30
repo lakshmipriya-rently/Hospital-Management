@@ -1,33 +1,33 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Doctors", type: :request do
   let(:doctor_user) { create(:user, :doctor) }
   let(:other_doctor_user) { create(:user, :doctor) }
 
   let(:doctor_token) do
-    create(:doorkeeper_access_token, resource_owner_id: doctor_user.id, scopes: 'public')
+    create(:doorkeeper_access_token, resource_owner_id: doctor_user.id, scopes: "public")
   end
 
   let(:other_doctor_token) do
-    create(:doorkeeper_access_token, resource_owner_id: other_doctor_user.id, scopes: 'public')
+    create(:doorkeeper_access_token, resource_owner_id: other_doctor_user.id, scopes: "public")
   end
 
   let(:headers_doctor) do
     {
-      'Authorization' => "Bearer #{doctor_token.token}",
-      'Content-Type' => 'application/json',
-      'Accept' => 'application/json'
+      "Authorization" => "Bearer #{doctor_token.token}",
+      "Content-Type" => "application/json",
+      "Accept" => "application/json",
     }
   end
 
-  let(:headers_other_doctor) do  
+  let(:headers_other_doctor) do
     {
-      'Authorization' => "Bearer #{other_doctor_token.token}",
-      'Content-Type' => 'application/json',
-      'Accept' => 'application/json'
+      "Authorization" => "Bearer #{other_doctor_token.token}",
+      "Content-Type" => "application/json",
+      "Accept" => "application/json",
     }
   end
-  
+
   describe "GET /api/v1/doctors" do
     let!(:doctors) { create_list(:doctor, 3) }
 
@@ -36,12 +36,12 @@ RSpec.describe "Api::V1::Doctors", type: :request do
       expect(json_response.size).to eq(Doctor.count)
     end
 
-     it "returns all doctors" do
+    it "returns all doctors" do
       get "/api/v1/doctors", headers: headers_doctor
       expect(response).to have_http_status(:ok)
     end
   end
-   
+
   describe "GET /api/v1/doctors/:id" do
     it "returns doctor details if authorized" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_doctor
@@ -50,12 +50,12 @@ RSpec.describe "Api::V1::Doctors", type: :request do
 
     it "returns doctor details if authorized" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_doctor
-      expect(json_response['id']).to eq(doctor_user.userable.id)
+      expect(json_response["id"]).to eq(doctor_user.userable.id)
     end
 
     it "returns forbidden if accessing another doctor" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_other_doctor
-      expect(json_response['error']).to eq("You're not authorized to do that!")
+      expect(json_response["error"]).to eq("You're not authorized to do that!")
     end
 
     it "returns forbidden if accessing another doctor" do
@@ -70,9 +70,8 @@ RSpec.describe "Api::V1::Doctors", type: :request do
 
     it "returns not found if doctor does not exist" do
       get "/api/v1/doctors/9999", headers: headers_doctor
-      expect(json_response['error']).to eq("Doctor not found.")
+      expect(json_response["error"]).to eq("Doctor not found.")
     end
-
   end
 
   describe "PATCH /api/v1/doctors/:id" do
@@ -82,15 +81,15 @@ RSpec.describe "Api::V1::Doctors", type: :request do
           available_attributes: {
             start_time: "09:00",
             end_time: "17:00",
-            available_days: ["Monday", "Wednesday"]
-          }
-        }
+            available_days: ["Monday", "Wednesday"],
+          },
+        },
       }.to_json
     end
 
     it "updates doctor if authorized" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_doctor
-      expect(json_response['available_days']).to include("Monday")
+      expect(json_response["available_days"]).to include("Monday")
     end
 
     it "updates doctor if authorized" do
@@ -100,15 +99,13 @@ RSpec.describe "Api::V1::Doctors", type: :request do
 
     it "returns forbidden if updating another doctor" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_other_doctor
-      expect(json_response['error']).to eq("You're not authorized to do that!")
+      expect(json_response["error"]).to eq("You're not authorized to do that!")
     end
-    
+
     it "returns forbidden if updating another doctor" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_other_doctor
       expect(response).to have_http_status(:forbidden)
     end
-
-
 
     it "returns unprocessable entity if invalid params" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}",

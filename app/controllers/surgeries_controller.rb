@@ -1,6 +1,6 @@
 class SurgeriesController < ApplicationController
   before_action :authenticate_user!, only: [:book_appointment, :new, :create, :destroy]
-  before_action :set_surgery, only: [:show, :book_appointment,:destroy]
+  before_action :set_surgery, only: [:show, :book_appointment, :destroy, :edit, :update]
   before_action :authorize_doctor!, only: [:new, :create, :destroy]
 
   def index
@@ -20,6 +20,17 @@ class SurgeriesController < ApplicationController
       redirect_to @surgery, notice: "Surgery added successfully."
     else
       render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @surgery.update(surgery_params)
+      redirect_to @surgery, notice: "Surgery updated successfully!"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -45,7 +56,7 @@ class SurgeriesController < ApplicationController
   def set_surgery
     @surgery = Surgery.find_by(id: params[:id])
     if @surgery.nil?
-      redirect_to doctor_path,notice: "surgery not found"
+      redirect_to doctor_path, notice: "surgery not found"
     end
   end
 

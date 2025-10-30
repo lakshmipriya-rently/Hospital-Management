@@ -3,7 +3,7 @@ class Api::V1::BaseController < ApplicationController
   respond_to :json
 
   private
-
+  
   def current_user_api
     @current_user ||= User.find_by(id: doorkeeper_token&.resource_owner_id)
   end
