@@ -8,16 +8,13 @@
   <div class="d-flex justify-content-end mb-4">
 
 
-
   <% if current_user.present? %>
-      <%= link_to "← Back to Patient", patient_path(current_user.id), class: "btn btn-outline-secondary px-5 py-3 fs-5 rounded-3 shadow-sm fw-semibold"%>
+      <%= link_to "← Back to Patient", patient_path(current_user&.userable.id), class: "btn btn-outline-secondary px-5 py-3 fs-5 rounded-3 shadow-sm fw-semibold"%>
    <% else %>
       <%= link_to "← Back to Patients List", patients_path,class: "btn btn-outline-secondary px-5 py-3 fs-5 rounded-3 shadow-sm fw-semibold" %>
    <% end %>
   </div>
   </div>
-
-  
 
   <!-- Doctors Queue List -->
   <% @doctors.each do |doctor| %>
@@ -77,7 +74,7 @@
       <div class="ms-md-4 text-md-end mt-3 mt-md-0">
         <% if current_user.present? %>
           <%= link_to "📖 Book Appointment", 
-                      new_appointment_path(doctor_id: doctor.id, patient_id: current_user.id), 
+                      new_appointment_path(doctor_id: doctor.id, patient_id: current_user&.userable.id), 
                       class: "btn btn-primary fw-bold fs-5 py-3 px-4 shadow-sm rounded-3" %>
         <% else %>
           <span class="text-danger fs-5">⚠️ Patient not specified</span>

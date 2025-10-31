@@ -1,5 +1,6 @@
 class Api::V1::AppointmentsController < Api::V1::BaseController
   before_action :authenticate_patient_api!, only: [:create]
+  before_action :set_appointment_context, only: [:create]
   before_action :authenticate_doctor_api!, only: [:update]
   before_action :set_appointment, only: [:update]
   before_action :doorkeeper_authorize!, unless: -> { Rails.env.test? }

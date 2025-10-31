@@ -175,4 +175,61 @@ RSpec.describe "Api::V1::Appointments", type: :request do
       end
     end
   end
+
+
+    describe "private method #set_appointment_context" do
+    let!(:doctor) { create(:doctor) }
+    let!(:surgery) { create(:surgery, doctor: doctor) }
+
+    context "when surgery_id is present" do
+      it "assigns @surgery and @doctor from surgery" do
+        allow_any_instance_of(Api::V1::AppointmentsController).to receive(:current_user).and_return(patient_user)
+        post base_url, params: { surgery_id: surgery.id, appointment: attributes_for(:appointment) }
+        expect(assigns(:doctor)).to eq(doctor)
+      end
+    end
+
+    context "when doctor_id is present" do
+      it "assigns @doctor directly" do
+        allow_any_instance_of(Api::V1::AppointmentsController).to receive(:current_user).and_return(patient_user)
+        post base_url, params: { doctor_id: doctor.id, appointment: attributes_for(:appointment) }
+        expect(assigns(:doctor)).to eq(doctor)
+      end
+    end
+
+    context "when neither surgery_id nor doctor_id is present" do
+      it "renders bad_request with proper error message" do
+        allow_any_instance_of(Api::V1::AppointmentsController).to receive(:current_user).and_return(patient_user)
+        post base_url, params: { appointment: attributes_for(:appointment) }
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+  end
+
+  describe "POST #create (successful save branch)" do
+    let!(:doctor) { create(:doctor) }
+    let!(:surgery) { create(:surgery, doctor: doctor) }
+    let(:valid_params) do
+      {
+        appointment: attributes_for(:appointment,
+                                    scheduled_at: 1.day.from_now,
+                                    disease: "Cold",
+                                    surgery_id: surgery.id),
+      }
+    end
+
+    it "creates an appointment successfully and returns created status" do
+      allow_any_instance_of(Api::V1::AppointmentsController).to receive(:current_user).and_return(patient_user)
+      expect {
+        post base_url, params: valid_params, headers: { "ACCEPT" => "application/json" }
+      }.to change(Appointment, :count).by(1)
+    end
+
+    it "renders JSON with appointment and location header" do
+      allow_any_instance_of(Api::V1::AppointmentsController).to receive(:current_user).and_return(patient_user)
+      post base_url, params: valid_params, headers: { "ACCEPT" => "application/json" }
+      expect(response).to have_http_status(:created)
+    end
+  end
+
 end

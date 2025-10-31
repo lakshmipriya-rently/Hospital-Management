@@ -37,7 +37,9 @@ Rails.application.routes.draw do
           get :confirmed
         end
       end
-      resources :surgeries, only: [:index, :show, :create, :destroy,:edit,:update]
+      resources :surgeries, only: [:index, :show, :create, :destroy,:edit,:update] do
+        post :book_appointment, on: :member
+      end
     end
   end
 

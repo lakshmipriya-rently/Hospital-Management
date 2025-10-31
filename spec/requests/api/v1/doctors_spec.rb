@@ -115,6 +115,19 @@ RSpec.describe "Api::V1::Doctors", type: :request do
     end
   end
 
+
+  describe "PATCH /api/v1/doctors/:id missing params" do
+    it "returns bad request when required params are missing" do
+      patch "/api/v1/doctors/#{doctor_user.userable.id}",
+            params: {}.to_json,
+            headers: headers_doctor
+
+      expect(response).to have_http_status(:bad_request)
+      expect(json_response["errors"]).to include(/param is missing or the value is empty/)
+    end
+  end
+
+
   def json_response
     JSON.parse(response.body)
   end

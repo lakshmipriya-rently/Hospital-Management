@@ -133,6 +133,10 @@ main > .container-fluid {
           <li class="nav-item">
             <%= link_to "View Doctors", patients_path, class: "nav-link" %>
           </li>
+        <% else %>
+         <li class="nav-item">
+            <%= link_to "View Doctors", new_user_session_path, class: "nav-link" %>
+          </li>
         <% end %>
         <% if user_signed_in? && current_user&.userable_type == "Doctor" || current_user&.userable_type == "Patient" %>
           <li class="nav-item">
@@ -174,14 +178,11 @@ main > .container-fluid {
   </div>
 <% end %>
    
-
   <main class="flex-fill d-flex">
     <div class="container-fluid py-4 px-5 flex-grow-1">
       <%= yield %>
     </div>
   </main>
-
-
 
     <!-- Footer -->
     <footer class="bg-white text-muted text-center py-3 mt-auto border-top">

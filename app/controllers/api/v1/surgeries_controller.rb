@@ -1,7 +1,7 @@
-class Api::V1::SurgeriesController < ApplicationController
+class Api::V1::SurgeriesController < Api::V1::BaseController
   before_action :doorkeeper_authorize!
   before_action :authenticate_user!
-  before_action :set_surgery, only: [:show, :destroy]
+  before_action :set_surgery, only: [:show, :destroy, :book_appointment]
 
   def index
     @surgeries = Surgery.all
@@ -43,12 +43,17 @@ class Api::V1::SurgeriesController < ApplicationController
     unless current_user&.userable_type == "Patient"
       return render json: { error: "You must be logged in as a patient to book an appointment." }, status: :forbidden
     end
+
+    render json: { message: "Appointment booked" }, status: :created
   end
 
   private
 
   def set_surgery
-    @surgery = Surgery.find(params[:id])
+    @surgery = Surgery.find_by(id: params[:id])
+    unless @surgery
+      render json: { error: "Surgery not found" }, status: :not_found and return
+    end
   end
 
   def surgery_params

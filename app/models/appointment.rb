@@ -9,8 +9,8 @@ class Appointment < ApplicationRecord
 
   scope :confirmed, -> { where(status: "confirmed") }
   scope :pending, -> { where(status: "pending") }
-
-  belongs_to :doctor
+                                     
+  belongs_to :doctor 
   belongs_to :patient
   belongs_to :surgery, optional: true
 

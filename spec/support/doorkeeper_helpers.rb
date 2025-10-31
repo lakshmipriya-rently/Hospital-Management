@@ -8,9 +8,13 @@ RSpec.configure do |config|
         token = auth.split(' ').last
         access_token = Doorkeeper::AccessToken.find_by(token: token)
         user = User.find_by(id: access_token&.resource_owner_id)
-        allow(controller).to receive(:current_user_api).and_return(user)
+  allow(controller).to receive(:current_user_api).and_return(user)
+  # Some API controllers reference `current_user` (Devise-style). In request specs
+  # set both to the same user so controller helpers that call current_user work.
+  allow(controller).to receive(:current_user).and_return(user)
       else
-        allow(controller).to receive(:current_user_api).and_return(nil)
+  allow(controller).to receive(:current_user_api).and_return(nil)
+  allow(controller).to receive(:current_user).and_return(nil)
       end
       true
     end

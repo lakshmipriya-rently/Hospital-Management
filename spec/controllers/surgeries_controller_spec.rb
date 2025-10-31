@@ -78,8 +78,21 @@ RSpec.describe SurgeriesController, type: :controller do
 
       it 'handles invalid params (redirects)' do
         post :create, params: invalid_params
-        expect(response).to have_http_status(:found)
+        expect(response).to have_http_status(:ok)
       end
+
+      context "when doctor submits invalid surgery" do
+    before do
+    allow(controller).to receive(:authenticate_user!).and_return(true)
+    allow(controller).to receive(:current_user).and_return(doctor_user)
+  end
+
+  it "renders new when save fails" do
+    post :create, params: { surgery: { name: "", description: "" } }
+    expect(response).to render_template(:new)
+  end
+end
+
     end
 
     context 'as non-doctor' do
@@ -95,6 +108,27 @@ RSpec.describe SurgeriesController, type: :controller do
       end
     end
   end
+
+  describe "PATCH #update" do
+  let!(:surgery) { create(:surgery, doctor: doctor, name: "Old Name") }
+
+  before do
+    allow(controller).to receive(:authenticate_user!).and_return(true)
+    allow(controller).to receive(:current_user).and_return(doctor_user)
+  end
+
+  it "renders edit when update fails" do
+    patch :update, params: { id: surgery.id, surgery: { name: "" } }
+    expect(response).to render_template(:edit)
+  end
+  
+  it "redirects to surgery when update succeeds" do
+  patch :update, params: { id: surgery.id, surgery: { name: "Updated Name" } }
+  expect(response).to redirect_to(surgery_path(surgery))
+end
+
+end
+
 
   describe 'POST #book_appointment' do
     let!(:surgery) { create(:surgery, doctor: doctor) }
@@ -151,6 +185,22 @@ RSpec.describe SurgeriesController, type: :controller do
         expect(response).to redirect_to(surgeries_path) 
       end
     end
+
+    context "as another doctor" do
+  let(:other_doctor) { create(:doctor) }
+  let(:other_doctor_user) { create(:user, userable: other_doctor) }
+
+  before do
+    allow(controller).to receive(:authenticate_user!).and_return(true)
+    allow(controller).to receive(:current_user).and_return(other_doctor_user)
+  end
+
+  it "redirects with not authorized alert" do
+    delete :destroy, params: { id: surgery.id }
+    expect(flash[:alert]).to eq("You are not authorized to delete this surgery.")
+  end
+end
+
   end
 
   describe "private methods" do

@@ -3,8 +3,7 @@ class Api::V1::DoctorsController < Api::V1::BaseController
   before_action :doorkeeper_authorize!
   before_action :set_doctor, only: [:show, :update]
   before_action :authenticate_user!
-  # before_action :check_if_appointment_expired, only: [:show]
-
+ 
   def index
     @doctors = Doctor.all
     render json: @doctors, status: :ok
@@ -40,15 +39,6 @@ class Api::V1::DoctorsController < Api::V1::BaseController
     @doctor = Doctor.find_by(id: params[:id])
     render json: { error: "Doctor not found." }, status: :not_found unless @doctor
   end
-
-  # def check_if_appointment_expired
-  #   @appointments = @doctor.appointments.order(scheduled_at: :asc)
-  #   @appointments.each do |appointment|
-  #     if appointment.scheduled_at.to_date < Date.today
-  #       appointment.update(status: :cancelled)
-  #     end
-  #   end
-  # end
 
   def handle_parameter_missing(exception)
     render json: { errors: [exception.message] }, status: :bad_request

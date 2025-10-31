@@ -9,8 +9,5 @@ class Patient < ApplicationRecord
   accepts_nested_attributes_for :user
 
   validates :blood_group, :address, presence: true
-
-  private
-
   
 end

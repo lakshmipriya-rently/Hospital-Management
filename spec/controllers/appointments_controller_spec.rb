@@ -129,4 +129,69 @@ RSpec.describe AppointmentsController, type: :controller do
        end
     end
   end
+
+     describe "private method #set_appointment_context" do
+    controller(AppointmentsController) do
+      def index
+        set_appointment_context
+        head :ok unless performed?
+      end
+    end
+
+    let!(:doctor) { create(:doctor) }
+    let!(:surgery) { create(:surgery, doctor: doctor) }
+
+    context "when surgery_id is present" do
+      it "assigns surgery correctly" do
+        get :index, params: { surgery_id: surgery.id }
+        expect(assigns(:surgery)).to eq(surgery)
+      end
+
+      it "assigns doctor correctly" do
+        get :index, params: { surgery_id: surgery.id }
+        expect(assigns(:doctor)).to eq(doctor)
+      end
+
+      it "responds with ok status" do
+        get :index, params: { surgery_id: surgery.id }
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "when doctor_id is present" do
+      it "assigns doctor correctly" do
+        get :index, params: { doctor_id: doctor.id }
+        expect(assigns(:doctor)).to eq(doctor)
+      end
+
+      it "assigns surgery as nil" do
+        get :index, params: { doctor_id: doctor.id }
+        expect(assigns(:surgery)).to be_nil
+      end
+
+      it "responds with ok status" do
+        get :index, params: { doctor_id: doctor.id }
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "when neither surgery_id nor doctor_id is present" do
+      before do
+        allow(controller).to receive(:redirect_back)
+          .with(fallback_location: surgeries_path, alert: "Cannot determine doctor or surgery")
+          .and_call_original
+        request.env["HTTP_REFERER"] = surgeries_path
+      end
+
+      it "redirects to surgeries_path" do
+        get :index
+        expect(response).to redirect_to(surgeries_path)
+      end
+
+      it "sets correct flash alert" do
+        get :index
+        expect(flash[:alert]).to eq("Cannot determine doctor or surgery")
+      end
+    end
+  end
 end
