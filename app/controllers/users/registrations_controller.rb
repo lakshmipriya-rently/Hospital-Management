@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-   before_action :configure_sign_up_params, only: [:create]
+   before_action :configure_sign_up_params, only: [ :create ]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  
   def new
     build_resource({})
     @doctor = Doctor.new
@@ -16,7 +15,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # POST /resource
-  
   def create
     build_resource(sign_up_params.except(:userable_attributes))
     case params[:user][:userable_type]
@@ -70,22 +68,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
 
-  # If you have extra params to permit, append them to the sanitizer.
-
-   def configure_sign_up_params
+  def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up, keys: [
                                                   :name, :phone_no, :dob, :gender, :userable_type,
-                                                  :password,:password_confirmation,
+                                                  :password, :password_confirmation,
                                                   userable_attributes: [
                                                     :license_id, :experience, :type_of_degree, :salary,
                                                     :blood_group, :organ_donor, :address,
                                                     { specialization_ids: [] },
-                                                    { available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }] },
-                                                  ],
+                                                    { available_attributes: [ :start_time, :end_time, :is_active, { available_days: [] } ] }
+                                                  ]
                                                 ])
-   end
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
@@ -122,7 +117,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     params.require(:user).require(:userable_attributes).permit(
       :license_id, :experience, :type_of_degree, :salary,
       { specialization_ids: [] },
-      { available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }] }
+      { available_attributes: [ :start_time, :end_time, :is_active, { available_days: [] } ] }
     )
   end
 end

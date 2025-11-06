@@ -1,5 +1,4 @@
-ActiveAdmin.register Patient do     
-  
+ActiveAdmin.register Patient do
   filter :blood_group
   filter :organ_donor
 
@@ -17,6 +16,4 @@ ActiveAdmin.register Patient do
     column :address
     actions
   end
-
-  
 end

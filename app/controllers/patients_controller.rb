@@ -1,6 +1,7 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show, :edit, :update, :confirmed]
-  before_action :check_and_update_status, only: [:show, :confirmed]
+  before_action :set_patient, only: [ :show, :edit, :update, :confirmed ]
+  before_action :check_and_update_status, only: [ :show, :confirmed ]
+  before_action :load_appointments, only: [ :show ]
 
   def index
     @doctors = Doctor.includes(:user).all
@@ -40,6 +41,9 @@ class PatientsController < ApplicationController
 
   def set_patient
     @patient = Patient.find_by(id: params[:id])
+  end
+
+  def load_appointments
   end
 
   def check_and_update_status

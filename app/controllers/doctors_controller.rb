@@ -1,6 +1,6 @@
 class DoctorsController < ApplicationController
   before_action :set_doctor
-  before_action :check_if_appointment_expired, only: [:show]
+  before_action :check_if_appointment_expired, only: [ :show ]
 
   def index
     @doctors = Doctor.all
@@ -29,7 +29,7 @@ class DoctorsController < ApplicationController
 
   def doctor_params
     params.require(:doctor).permit(
-      available_attributes: [:start_time, :end_time, :is_active, { available_days: [] }],
+      available_attributes: [ :start_time, :end_time, :is_active, { available_days: [] } ],
     )
   end
 

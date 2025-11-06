@@ -5,7 +5,7 @@ gem "rails", "~> 7.2.2", ">= 7.2.2.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
-#gem "sqlite3", ">= 1.4"
+# gem "sqlite3", ">= 1.4"
 gem "pg", "~> 1.2"
 
 # Use the Puma web server [https://github.com/puma/puma]
@@ -44,19 +44,17 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  gem 'simplecov', require: false
+  gem "simplecov", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-
   gem "rspec-rails"
   gem "factory_bot_rails"
-
+  gem "rubocop-rspec", require: false
   gem "byebug"
 end
 
 group :development do
-
   # gem 'mailcatcher', require: false
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
@@ -72,19 +70,20 @@ group :test do
 end
 
 gem "sassc-rails"
- 
 
 gem "devise", "~> 4.9"
 
 gem "activeadmin"
 
-gem 'rabl'
+gem "rabl"
 
 gem "doorkeeper"
 
-gem 'faker' 
+gem "faker"
+
+gem "sidekiq"
 
 
 group :test do
-  gem 'rails-controller-testing'
+  gem "rails-controller-testing"
 end

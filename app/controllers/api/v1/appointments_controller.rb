@@ -1,8 +1,8 @@
 class Api::V1::AppointmentsController < Api::V1::BaseController
-  before_action :authenticate_patient_api!, only: [:create]
-  before_action :set_appointment_context, only: [:create]
-  before_action :authenticate_doctor_api!, only: [:update]
-  before_action :set_appointment, only: [:update]
+  before_action :authenticate_patient_api!, only: [ :create ]
+  before_action :set_appointment_context, only: [ :create ]
+  before_action :authenticate_doctor_api!, only: [ :update ]
+  before_action :set_appointment, only: [ :update ]
   before_action :doorkeeper_authorize!, unless: -> { Rails.env.test? }
   before_action :authenticate_user!, unless: -> { Rails.env.test? }
 
@@ -13,7 +13,7 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
 
   def show
      @appointment = Appointment.find_by(id: params[:id])
-     render json:@appointment,status: :ok
+     render json: @appointment, status: :ok
   end
 
 
@@ -80,5 +80,4 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
       render json: { error: "Unauthorized. Must be logged in as a doctor." }, status: :unauthorized and return
     end
   end
-
 end

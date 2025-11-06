@@ -1,5 +1,5 @@
 class BillsController < ApplicationController
-  before_action :set_bill, only: [:update]
+  before_action :set_bill, only: [ :update ]
 
   def update
     unless @bill
@@ -12,8 +12,7 @@ class BillsController < ApplicationController
       redirect_to doctor_path(current_user.userable_id), alert: "Update Failed: #{@bill.errors.full_messages}"
     end
   end
-  
-  private
+private
 
   def set_bill
     @bill = Bill.find_by(id: params[:id])

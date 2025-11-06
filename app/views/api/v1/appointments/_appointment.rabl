@@ -1,3 +1,1 @@
-attributes :id,:status,:created_at,:disease,:scheduled_at
-   
-
+attributes :id, :status, :created_at, :disease, :scheduled_at

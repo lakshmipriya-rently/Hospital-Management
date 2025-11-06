@@ -4,13 +4,13 @@ class Appointment < ApplicationRecord
          pending: 0,
          confirmed: 1,
          cancelled: 2,
-         completed: 3,
+         completed: 3
        }
 
   scope :confirmed, -> { where(status: "confirmed") }
   scope :pending, -> { where(status: "pending") }
-                                     
-  belongs_to :doctor 
+
+  belongs_to :doctor
   belongs_to :patient
   belongs_to :surgery, optional: true
 
@@ -21,7 +21,6 @@ class Appointment < ApplicationRecord
   validate :scheduled_at_must_be_in_the_future
 
   after_update :create_new_bill
- 
 
   private
 
@@ -46,9 +45,9 @@ class Appointment < ApplicationRecord
 
   def calculate_total_amount
     if self.surgery_id.nil?
-      return 500
+      500
     else
-      return 10000
+      10000
     end
   end
 end

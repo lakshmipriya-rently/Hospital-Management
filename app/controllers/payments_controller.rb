@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  before_action :set_bill, only: [:new, :create]
-  before_action :set_payments, only: [:show]
+  before_action :set_bill, only: [ :new, :create ]
+  before_action :set_payments, only: [ :show ]
 
   def new
     @patient_id = params[:patient_id]

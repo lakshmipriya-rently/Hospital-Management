@@ -16,7 +16,7 @@ RSpec.describe "Api::V1::Doctors", type: :request do
     {
       "Authorization" => "Bearer #{doctor_token.token}",
       "Content-Type" => "application/json",
-      "Accept" => "application/json",
+      "Accept" => "application/json"
     }
   end
 
@@ -24,36 +24,34 @@ RSpec.describe "Api::V1::Doctors", type: :request do
     {
       "Authorization" => "Bearer #{other_doctor_token.token}",
       "Content-Type" => "application/json",
-      "Accept" => "application/json",
+      "Accept" => "application/json"
     }
   end
 
   describe "GET /api/v1/doctors" do
-    let!(:doctors) { create_list(:doctor, 3) }
-
     it "returns all doctors" do
       get "/api/v1/doctors", headers: headers_doctor
       expect(json_response.size).to eq(Doctor.count)
     end
 
-    it "returns all doctors" do
+    it "returns status code ok" do
       get "/api/v1/doctors", headers: headers_doctor
       expect(response).to have_http_status(:ok)
     end
   end
 
   describe "GET /api/v1/doctors/:id" do
-    it "returns doctor details if authorized" do
+    it "returns status code ok doctor details if authorized" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_doctor
       expect(response).to have_http_status(:ok)
     end
 
-    it "returns doctor details if authorized" do
+    it "returns doctor id" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_doctor
       expect(json_response["id"]).to eq(doctor_user.userable.id)
     end
 
-    it "returns forbidden if accessing another doctor" do
+    it "returns error if accessing another doctor" do
       get "/api/v1/doctors/#{doctor_user.userable.id}", headers: headers_other_doctor
       expect(json_response["error"]).to eq("You're not authorized to do that!")
     end
@@ -68,7 +66,7 @@ RSpec.describe "Api::V1::Doctors", type: :request do
       expect(response).to have_http_status(:not_found)
     end
 
-    it "returns not found if doctor does not exist" do
+    it "returns not found error if doctor does not exist" do
       get "/api/v1/doctors/9999", headers: headers_doctor
       expect(json_response["error"]).to eq("Doctor not found.")
     end
@@ -81,23 +79,23 @@ RSpec.describe "Api::V1::Doctors", type: :request do
           available_attributes: {
             start_time: "09:00",
             end_time: "17:00",
-            available_days: ["Monday", "Wednesday"],
-          },
-        },
+            available_days: [ "Monday", "Wednesday" ]
+          }
+        }
       }.to_json
     end
 
-    it "updates doctor if authorized" do
+    it "verify response of available_days" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_doctor
       expect(json_response["available_days"]).to include("Monday")
     end
 
-    it "updates doctor if authorized" do
+    it "returns status code ok" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_doctor
       expect(response).to have_http_status(:ok)
     end
 
-    it "returns forbidden if updating another doctor" do
+    it "returns error if updating another doctor" do
       patch "/api/v1/doctors/#{doctor_user.userable.id}", params: valid_params, headers: headers_other_doctor
       expect(json_response["error"]).to eq("You're not authorized to do that!")
     end
@@ -123,6 +121,13 @@ RSpec.describe "Api::V1::Doctors", type: :request do
             headers: headers_doctor
 
       expect(response).to have_http_status(:bad_request)
+    end
+
+    it "returns error when required params are missing" do
+      patch "/api/v1/doctors/#{doctor_user.userable.id}",
+            params: {}.to_json,
+            headers: headers_doctor
+
       expect(json_response["errors"]).to include(/param is missing or the value is empty/)
     end
   end

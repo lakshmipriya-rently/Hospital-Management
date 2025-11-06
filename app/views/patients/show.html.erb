@@ -75,9 +75,13 @@
                           "confirmed" => "success",
                           "canceled" => "danger"
                         }[appointment.status] || "secondary" %>
+                       <% if appointment.scheduled_at < Date.today %>
+                          <span class= "badge bg-danger"> appointment expired </span>
+                        <% else %>
                         <span class="badge bg-<%= status_class %> fs-6 px-3 py-2">
                           <%= appointment.status.capitalize %>
                         </span>
+                        <% end %>
                       </td>
                       <td class="py-3"><%= doctor.user.name || "N/A" %></td>
                       <td> <%= link_to "View Appointment",
@@ -168,3 +172,6 @@
     <% end %>
   </div>
 </div>
+
+
+

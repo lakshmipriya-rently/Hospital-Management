@@ -1,10 +1,10 @@
 ActiveAdmin.register User do
-   
   filter :email
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
-  
+  scope :patient
+  scope :doctor
   index do
     selectable_column
     id_column

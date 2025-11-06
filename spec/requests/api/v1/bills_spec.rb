@@ -14,6 +14,10 @@ RSpec.describe "Api::V1::Bills", type: :request do
     it "updates bill and redirects with notice" do
       patch "/bills/#{bill.id}", params: { bill: { tot_amount: 1000 } }
       expect(response).to redirect_to(doctor_path(doctor_user.userable_id))
+    end
+
+    it "updates bill and reload tot_amount" do
+      patch "/bills/#{bill.id}", params: { bill: { tot_amount: 1000 } }
       expect(bill.reload.tot_amount.to_i).to eq(1000)
     end
 

@@ -2,7 +2,7 @@ class Api::V1::PatientsController < Api::V1::BaseController
   before_action :doorkeeper_authorize!
   rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
-  before_action :set_patient, only: [:show, :update, :confirmed]
+  before_action :set_patient, only: [ :show, :update, :confirmed ]
   before_action :authenticate_user!
 
   def index
@@ -36,12 +36,13 @@ class Api::V1::PatientsController < Api::V1::BaseController
         @confirmed_appointments = @patient.appointments.where(status: "confirmed").order(scheduled_at: :desc)
         if @confirmed_appointments.nil?
           @confirmed_appointments = []
+          render json: { patient: @patient.id, appointments: @confirmed_appointments, message: "No confirmed appointments found" }, head: :no_content
         end
-        render json: { patient: @patient.id, appointments: @confirmed_appointments.map do |appointment| {
+          render json: { patient: @patient.id, appointments: @confirmed_appointments.map do |appointment| {
                  id: appointment.id,
                  scheduled_at: appointment.scheduled_at,
                  disease: appointment.disease,
-                 status: appointment.status,
+                 status: appointment.status
                }                end }, status: :ok
       end
     else
@@ -61,6 +62,6 @@ class Api::V1::PatientsController < Api::V1::BaseController
   end
 
   def handle_parameter_missing(exception)
-    render json: { errors: [exception.message] }, status: :bad_request
+    render json: { errors: [ exception.message ] }, status: :bad_request
   end
 end

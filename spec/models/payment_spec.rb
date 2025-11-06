@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Payment, type: :model do
-  context "validations" do
+  context "when validates" do
     it "validates the payment is not greater than remaining" do
       bill = Bill.create(tot_amount: 500, paid_amount: 0.0)
-      payment = Payment.new(amount_to_be_paid: 600, bill: bill)
+      payment = described_class.new(amount_to_be_paid: 600, bill: bill)
       payment.validate
       expect(payment.errors[:amount_to_be_paid]).to include("cannot be greater than the remaining bill amount")
     end
@@ -16,7 +16,7 @@ RSpec.describe Payment, type: :model do
         appointment = FactoryBot.create(:appointment)
         bill = FactoryBot.create(:bill, tot_amount: 500, paid_amount: 0.0, appointment: appointment)
         un_paid_payment = create(:payment, status: :un_paid, bill: bill)
-        expect(Payment.un_paid).to include(un_paid_payment)
+        expect(described_class.un_paid).to include(un_paid_payment)
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe Payment, type: :model do
         appointment = FactoryBot.create(:appointment)
         bill = FactoryBot.create(:bill, tot_amount: 500, paid_amount: 0.0, appointment: appointment)
         paid_payment = create(:payment, status: :paid, bill: bill, amount_to_be_paid: 500)
-        expect(Payment.paid).to include(paid_payment)
+        expect(described_class.paid).to include(paid_payment)
       end
     end
   end

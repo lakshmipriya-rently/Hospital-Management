@@ -1,12 +1,9 @@
 ActiveAdmin.register Payment do
-
   scope :un_paid
   scope :paid
- 
   filter :payment_method
   filter :status
 
-  
   index do
     selectable_column
     id_column
@@ -18,6 +15,4 @@ ActiveAdmin.register Payment do
     column :status
     actions
   end
-  
-  
 end

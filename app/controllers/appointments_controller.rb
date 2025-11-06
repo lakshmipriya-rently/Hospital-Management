@@ -1,8 +1,8 @@
 class AppointmentsController < ApplicationController
-  before_action :authenticate_patient!, only: [:new, :create]
-  before_action :authenticate_doctor!, only: [:update]
-  before_action :set_appointment_context, only: [:new, :create]
-  before_action :set_appointment, only: [:show, :update]
+  before_action :authenticate_patient!, only: [ :new, :create ]
+  before_action :authenticate_doctor!, only: [ :update ]
+  before_action :set_appointment_context, only: [ :new, :create ]
+  before_action :set_appointment, only: [ :show, :update ]
 
   def new
     @appointment = Appointment.new
@@ -16,6 +16,7 @@ class AppointmentsController < ApplicationController
     @appointment.status = :pending
 
     if @appointment.save
+      PatientReminderJob.perform_later(@appointment.id)
       redirect_to patient_path(@appointment.patient), notice: "Appointment booked successfully."
     else
       render :new, status: :unprocessable_entity

@@ -10,34 +10,34 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  get "home/index" , to: "home#index"
+  get "home/index", to: "home#index"
   get "home/redirect_by_role", to: "home#redirect_by_role"
 
   devise_for :users, controllers: { registrations: "users/registrations" }
 
-  resources :surgeries, only: [:index, :show, :new, :create, :destroy,:edit,:update] do
+  resources :surgeries, only: [ :index, :show, :new, :create, :destroy, :edit, :update ] do
     post :book_appointment, on: :member
-    resources :appointments, only: [:new, :create, :update]
+    resources :appointments, only: [ :new, :create, :update ]
   end
 
-  resources :appointments 
+  resources :appointments
   resources :patients
-  resources :doctors, only: [:index,:show,:edit,:update]
+  resources :doctors, only: [ :index, :show, :edit, :update ]
   resources :staffs
   resources :bills
   resources :payments
 
   namespace :api do
     namespace :v1 do
-      resources :appointments, only: [:index,:show,:create,:update]
-      resources :users, only: [:index,:show]
-      resources :doctors, only: [:index,:show,:update,:edit]
+      resources :appointments, only: [ :index, :show, :create, :update ]
+      resources :users, only: [ :index, :show ]
+      resources :doctors, only: [ :index, :show, :update, :edit ]
       resources :patients do
-        member do 
+        member do
           get :confirmed
         end
       end
-      resources :surgeries, only: [:index, :show, :create, :destroy,:edit,:update] do
+      resources :surgeries, only: [ :index, :show, :create, :destroy, :edit, :update ] do
         post :book_appointment, on: :member
       end
     end
@@ -56,6 +56,8 @@ resources :patients do
     get :confirmed
   end
 end
+  require "sidekiq/web"
+  mount Sidekiq::Web => "/sidekiq"
 
 
   # get "patients/:id/show_patient_appointments"

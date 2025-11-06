@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     {
       "Authorization" => "Bearer #{owner_token.token}",
       "Content-Type" => "application/json",
-      "Accept" => "application/json",
+      "Accept" => "application/json"
     }
   end
 
@@ -19,16 +19,20 @@ RSpec.describe "Api::V1::Users", type: :request do
     {
       "Authorization" => "Bearer #{other_token.token}",
       "Content-Type" => "application/json",
-      "Accept" => "application/json",
+      "Accept" => "application/json"
     }
   end
 
   describe "GET /api/v1/users" do
     before { create_list(:user, 3) }
 
-    it "returns all users" do
+    it "returns status code ok" do
       get "/api/v1/users", headers: headers_owner
       expect(response).to have_http_status(:ok)
+    end
+
+    it "returns all users" do
+      get "/api/v1/users", headers: headers_owner
       expect(json_response.size).to eq(User.count)
     end
   end
@@ -36,28 +40,40 @@ RSpec.describe "Api::V1::Users", type: :request do
   describe "GET /api/v1/users/:id" do
     context "when authorized (matching userable id)" do
       it "returns the user" do
-        # create a User whose id equals the current_user_api.userable_id
         target_user = create(:user, id: user_owner.userable_id)
         get "/api/v1/users/#{target_user.id}", headers: headers_owner
         expect(response).to have_http_status(:ok)
-        # RABL renders the show as { "user": { ... } }
+      end
+
+      it "verify the id" do
+       target_user = create(:user, id: user_owner.userable_id)
+        get "/api/v1/users/#{target_user.id}", headers: headers_owner
         expect(json_response["user"]["id"]).to eq(target_user.id)
       end
     end
 
     context "when accessing another user" do
-      it "returns forbidden" do
+      it "returns status code forbidden" do
         target_user = create(:user)
         get "/api/v1/users/#{target_user.id}", headers: headers_other
         expect(response).to have_http_status(:forbidden)
+      end
+
+      it "verify the authorization" do
+        target_user = create(:user)
+        get "/api/v1/users/#{target_user.id}", headers: headers_other
         expect(json_response["error"]).to eq("You're not authorized to do that!")
       end
     end
 
     context "when user not found" do
-      it "returns not found" do
+      it "returns status code not found" do
         get "/api/v1/users/999999", headers: headers_owner
         expect(response).to have_http_status(:not_found)
+      end
+
+      it "include error when user not found" do
+        get "/api/v1/users/999999", headers: headers_owner
         expect(json_response["error"]).to eq("User not found.")
       end
     end

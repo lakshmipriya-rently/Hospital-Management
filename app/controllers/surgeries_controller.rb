@@ -1,7 +1,7 @@
 class SurgeriesController < ApplicationController
-  before_action :authenticate_user!, only: [:book_appointment, :new, :create, :destroy]
-  before_action :set_surgery, only: [:show, :book_appointment, :destroy, :edit, :update]
-  before_action :authorize_doctor!, only: [:new, :create, :destroy]
+  before_action :authenticate_user!, only: [ :book_appointment, :new, :create, :destroy ]
+  before_action :set_surgery, only: [ :show, :book_appointment, :destroy, :edit, :update ]
+  before_action :authorize_doctor!, only: [ :new, :create, :destroy ]
 
   def index
     @surgeries = Surgery.all

@@ -1,0 +1,5 @@
+<p>Dear  <%= @patient.user.name %> ,</p>
+<p>You have an appointment with Dr.<%= @appointment&.doctor&.user&.name %> at <%= @appointment.scheduled_at.strftime("%I:%M %p") %>.</p>
+<p>It will expire at <%= @appointment&.scheduled_at.strftime("%I:%M %p") %>.</p>
+<p>Kindly follow the instructions! For any help reach out us!</p>
+<p>Thank you!</p>

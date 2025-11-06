@@ -4,9 +4,9 @@ RSpec.describe DoctorsController, type: :controller do
   let!(:doctor) { create(:doctor) }
   let!(:available) { create(:available, doctor: doctor) }
 
-  let!(:appointment2) { create(:appointment, doctor: doctor, scheduled_at: 1.day.from_now) }
+  let!(:appointment_two) { create(:appointment, doctor: doctor, scheduled_at: 1.day.from_now) }
 
-  let!(:appointment1) do
+  let!(:appointment_one) do
     appointment = build(:appointment, doctor: doctor, patient: create(:patient), scheduled_at: 1.day.ago, status: :cancelled)
     appointment.save(validate: false)
     appointment
@@ -67,7 +67,7 @@ RSpec.describe DoctorsController, type: :controller do
               start_time: "09:00",
               end_time: "17:00",
               is_active: true,
-              available_days: ["monday"]
+              available_days: [ "monday" ]
             }
           }
         }
@@ -107,11 +107,11 @@ RSpec.describe DoctorsController, type: :controller do
     before { get :show, params: { id: doctor.id } }
 
     it "cancels past appointments" do
-      expect(appointment1.reload.status).to eq("cancelled")
+      expect(appointment_one.reload.status).to eq("cancelled")
     end
 
     it "does not cancel future appointments" do
-      expect(appointment2.reload.status).not_to eq("cancelled")
+      expect(appointment_two.reload.status).not_to eq("cancelled")
     end
   end
 end

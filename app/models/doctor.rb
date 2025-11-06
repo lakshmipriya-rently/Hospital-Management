@@ -1,7 +1,7 @@
 class Doctor < ApplicationRecord
   include Ransackable
   has_one :available
-  has_many :appointments,dependent: :destroy
+  has_many :appointments, dependent: :destroy
   has_many :surgeries
   has_one :user, as: :userable
   has_many :patients, through: :appointments
@@ -27,7 +27,7 @@ class Doctor < ApplicationRecord
             Time.current.strftime("%H:%M")
           )
         }
-  
+
   def active_now?
     return false unless available&.start_time.present? && available&.end_time.present?
     now = Time.now.strftime("%H:%M")

@@ -2,7 +2,15 @@
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+   add_filter 'app/helpers/application_helper.rb'
+   add_filter 'app/admin'
+   add_filter 'app/mailers'
+   add_filter 'app/jobs'
+   add_filter 'app/models/concerns/ransackable.rb'
+   add_filter 'app/controllers/api/v1/base_controller.rb'
+end
+
 
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production

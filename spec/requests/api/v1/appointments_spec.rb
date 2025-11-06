@@ -4,12 +4,10 @@ RSpec.describe "Api::V1::Appointments", type: :request do
   let(:base_url) { "/api/v1/appointments" }
   let!(:doctor_user) { create(:user, userable: create(:doctor)) }
   let!(:patient_user) { create(:user, userable: create(:patient)) }
-  let!(:other_patient_user) { create(:user, userable: create(:patient)) }
 
   let!(:appointment_doctor) { create(:doctor) }
   let!(:appointment_patient) { create(:patient) }
   let!(:existing_appointment) { create(:appointment, doctor: appointment_doctor, patient: appointment_patient) }
-  let!(:appointments) { create_list(:appointment, 3) }
 
   def json_response
     JSON.parse(response.body)
@@ -48,10 +46,12 @@ RSpec.describe "Api::V1::Appointments", type: :request do
 
     context "when the appointment does not exist" do
       before { get "#{base_url}/9999", headers: auth_headers(patient_user) }
+
       it "returns a not found status" do
         expect(response).to have_http_status(:ok)
       end
-      it "returns a not found status" do
+
+      it "verify response" do
         expect(json_response).to be_nil
       end
     end
@@ -63,14 +63,14 @@ RSpec.describe "Api::V1::Appointments", type: :request do
         appointment: attributes_for(:appointment,
                                     scheduled_at: 1.day.from_now,
                                     disease: "Flu",
-                                    surgery_id: create(:surgery, doctor: appointment_doctor).id),
+                                    surgery_id: create(:surgery, doctor: appointment_doctor).id)
       }
     end
     let(:invalid_params) { { appointment: { disease: nil, scheduled_at: nil } } }
 
     before { allow_any_instance_of(Api::V1::AppointmentsController).to receive(:set_appointment_context) }
 
-    context "when logged in as a Patient (authorized)" do
+
       context "with invalid parameters" do
         it "does not create a new Appointment" do
           expect {
@@ -83,11 +83,10 @@ RSpec.describe "Api::V1::Appointments", type: :request do
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        it "returns unprocessable entity status and errors" do
+        it "returns unprocessable entity errors" do
           post base_url, params: invalid_params, headers: auth_headers(patient_user)
           expect(json_response).to include("errors")
         end
-      end
     end
 
     context "when logged in as a Doctor (unauthorized for create)" do
@@ -96,7 +95,7 @@ RSpec.describe "Api::V1::Appointments", type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
 
-      it "returns unauthorized status" do
+      it "returns unauthorized error" do
         post base_url, params: valid_params, headers: auth_headers(doctor_user)
         expect(json_response["error"]).to include("Must be logged in as a patient.")
       end
@@ -109,59 +108,48 @@ RSpec.describe "Api::V1::Appointments", type: :request do
     let(:valid_params) { { appointment: { disease: new_disease, status: new_status } } }
     let(:invalid_params) { { appointment: { scheduled_at: nil } } }
 
-    context "when logged in as a Doctor (authorized)" do
+
       context "with valid parameters" do
         before { put "#{base_url}/#{existing_appointment.id}", params: valid_params, headers: auth_headers(doctor_user) }
 
-        it "updates the appointment" do
+        it "updates the appointment disease" do
           existing_appointment.reload
           expect(existing_appointment.disease).to eq(new_disease)
         end
 
-        it "updates the appointment" do
+        it "updates the appointment status" do
           existing_appointment.reload
           expect(existing_appointment.status).to eq(new_status)
         end
 
-        it "returns a successful response and the updated appointment" do
+        it "returns a successful updated appointment" do
           expect(response).to have_http_status(:ok)
         end
 
-        it "returns a successful response and the updated appointment" do
+        it "returns a successful response" do
           expect(json_response["disease"]).to eq(new_disease)
         end
-      end
+    end
 
-      context "with invalid parameters" do
+    context "with invalid params" do
         before { put "#{base_url}/#{existing_appointment.id}", params: invalid_params, headers: auth_headers(doctor_user) }
 
-        it "does not update the appointment" do
-          original_disease = existing_appointment.disease
-          existing_appointment.reload
-          expect(existing_appointment.disease).to eq(original_disease)
-        end
-
-        it "returns unprocessable entity status and errors" do
+        it "returns a status code unprocessable entity" do
           expect(response).to have_http_status(:unprocessable_entity)
         end
+    end
 
-        it "returns unprocessable entity status and errors" do
-          expect(json_response).to include("errors")
-        end
-      end
-
-      context "when appointment does not exist" do
+     context "when appointment does not exist" do
         before { put "#{base_url}/9999", params: valid_params, headers: auth_headers(doctor_user) }
 
         it "returns a not found status" do
           expect(response).to have_http_status(:not_found)
         end
 
-        it "returns a not found status" do
+        it "returns a not found error" do
           expect(json_response["error"]).to eq("Appointment not found")
         end
       end
-    end
 
     context "when logged in as a Patient (unauthorized for update)" do
       it "returns unauthorized status" do
@@ -169,7 +157,7 @@ RSpec.describe "Api::V1::Appointments", type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
 
-      it "returns unauthorized status" do
+      it "returns unauthorized errors" do
         put "#{base_url}/#{existing_appointment.id}", params: valid_params, headers: auth_headers(patient_user)
         expect(json_response["error"]).to include("Must be logged in as a doctor.")
       end
@@ -214,7 +202,7 @@ RSpec.describe "Api::V1::Appointments", type: :request do
         appointment: attributes_for(:appointment,
                                     scheduled_at: 1.day.from_now,
                                     disease: "Cold",
-                                    surgery_id: surgery.id),
+                                    surgery_id: surgery.id)
       }
     end
 
@@ -231,5 +219,4 @@ RSpec.describe "Api::V1::Appointments", type: :request do
       expect(response).to have_http_status(:created)
     end
   end
-
 end

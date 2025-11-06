@@ -1,17 +1,13 @@
-
-
 module ApplicationHelper
   def toastr_flash
     flash_messages = []
     flash.each do |type, message|
-
       toastr_type = case type.to_s
-                    when 'notice' then 'success'
-                    when 'alert' then 'error'
-                    when 'error', 'success', 'warning', 'info' then type.to_s
-                    else 'info'
-                    end
-
+      when "notice" then "success"
+      when "alert" then "error"
+      when "error", "success", "warning", "info" then type.to_s
+      else "info"
+      end
       Array(message).each do |msg|
         next if msg.blank?
 

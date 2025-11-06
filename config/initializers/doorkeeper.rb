@@ -6,7 +6,7 @@ Doorkeeper.configure do
   orm :active_record
 
   # This block will be called to check whether the resource owner is authenticated or not.
- 
+
   resource_owner_from_credentials do |_routes|
        user = User.find_by(email: params[:username])
        if user && user&.valid_password?(params[:password])
@@ -18,18 +18,18 @@ Doorkeeper.configure do
 
   grant_flows %w[authorization_code client_credentials password refresh_token]
   use_refresh_token
-  access_token_expires_in 1.day 
+  access_token_expires_in 1.day
 
   default_scopes  :read
   optional_scopes :write
 
 
-  # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
-  # file then you need to declare this block in order to restrict access to the web interface for
-  # adding oauth authorized applications. In other case it will return 403 Forbidden response
-  # every time somebody will try to access the admin web interface.
-  #
-  
+   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
+   # file then you need to declare this block in order to restrict access to the web interface for
+   # adding oauth authorized applications. In other case it will return 403 Forbidden response
+   # every time somebody will try to access the admin web interface.
+   #
+
 
    admin_authenticator do
     unless current_admin_user
@@ -39,7 +39,7 @@ Doorkeeper.configure do
 
   # You can use your own model classes if you need to extend (or even override) default
   # Doorkeeper models such as `Application`, `AccessToken` and `AccessGrant.
-  #s
+  # s
   # By default Doorkeeper ActiveRecord ORM uses its own classes:
   #
   # access_token_class "Doorkeeper::AccessToken"
@@ -61,14 +61,14 @@ Doorkeeper.configure do
   #
   #   self.table_name = "hey_i_wanna_my_name"
   #
-  #   def destroy_me!
+  #  def destroy_me!
   #     destroy
-  #   end
+  #  end
   # end
 
   # skip_authorization do
-	# 	true
-	# end
+  # 	true
+  # end
 
   # Enables polymorphic Resource Owner association for Access Tokens and Access Grants.
   # By default this option is disabled.

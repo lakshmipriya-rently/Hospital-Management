@@ -1,5 +1,4 @@
 ActiveAdmin.register Doctor do
- 
   scope :all
   scope :inactive_now
   scope :active_now
@@ -9,7 +8,7 @@ ActiveAdmin.register Doctor do
   filter :salary
   filter :created_at
   filter :start_time
-  filter :specializations, as: :select, collection: Proc.new { Specialization.all.pluck(:specialization,:id) }
+  filter :specializations, as: :select, collection: Proc.new { Specialization.all.pluck(:specialization, :id) }
 
   index do
   selectable_column
@@ -36,7 +35,7 @@ end
 end
 
 action_item :view, only: :show do
-  link_to 'View on site', doctor_path(resource.user)
+  link_to "View on site", doctor_path(resource.user)
 end
 
 form do |f|
@@ -52,7 +51,4 @@ form do |f|
   end
   f.actions
 end
-
-
-  
 end

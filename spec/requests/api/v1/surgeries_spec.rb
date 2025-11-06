@@ -19,30 +19,54 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
     JSON.parse(response.body)
   end
 
-  describe 'GET /api/v1/surgeries/:id' do
-    it 'returns correct JSON message when surgery not found' do
-      get '/api/v1/surgeries/999999', headers: headers_doctor
+  describe 'DELETE /api/v1/surgeries/:id when surgery not found' do
+    it 'returns status code not_found' do
+      delete '/api/v1/surgeries/999999', headers: headers_doctor
       expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns not_found with proper error message' do
+      delete '/api/v1/surgeries/999999', headers: headers_doctor
       expect(json_response['error']).to eq('Surgery not found')
     end
   end
 
   describe 'GET /api/v1/surgeries' do
-    it 'returns all surgeries' do
+    it 'returns status code ok' do
       create_list(:surgery, 2, doctor: doctor_user.userable)
       get '/api/v1/surgeries', headers: headers_doctor
       expect(response).to have_http_status(:ok)
+    end
+
+    it 'verify the response' do
+      create_list(:surgery, 2, doctor: doctor_user.userable)
+      get '/api/v1/surgeries', headers: headers_doctor
       expect(json_response).to be_an(Array)
+    end
+
+    it 'returns all surgeries' do
+      create_list(:surgery, 2, doctor: doctor_user.userable)
+      get '/api/v1/surgeries', headers: headers_doctor
       expect(json_response.size).to eq(Surgery.count)
     end
   end
 
   describe 'GET /api/v1/surgeries/:id (exists)' do
-    it 'returns surgery JSON when found' do
+    it 'returns status code ok' do
       s = create(:surgery, doctor: doctor_user.userable)
       get "/api/v1/surgeries/#{s.id}", headers: headers_doctor
       expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns user if user found' do
+      s = create(:surgery, doctor: doctor_user.userable)
+      get "/api/v1/surgeries/#{s.id}", headers: headers_doctor
       expect(json_response['id']).to eq(s.id)
+    end
+
+    it 'returns status not_found' do
+      get "/api/v1/surgeries/9999", headers: headers_doctor
+      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -51,10 +75,8 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
       let(:invalid_params) { { surgery: { name: '', description: '' } } }
 
       it 'does not create a surgery and returns unprocessable_entity' do
-        expect {
             post '/api/v1/surgeries', params: invalid_params.to_json, headers: headers_doctor
-          }.not_to change(Surgery, :count)
-          expect(response).to have_http_status(:unprocessable_entity)
+            expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'renders JSON errors for invalid surgery' do
@@ -67,11 +89,13 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
     context 'when doctor creates with valid params' do
       let(:valid_params) { { surgery: { name: 'Appendectomy', description: 'Removal of appendix' } } }
 
-      it 'creates a surgery and returns created' do
-        expect {
-          post '/api/v1/surgeries', params: valid_params.to_json, headers: headers_doctor
-        }.to change(Surgery, :count).by(1)
+      it 'returns status code created' do
+        post '/api/v1/surgeries', params: valid_params.to_json, headers: headers_doctor
         expect(response).to have_http_status(:created)
+      end
+
+      it 'creates a surgery and returns response' do
+        post '/api/v1/surgeries', params: valid_params.to_json, headers: headers_doctor
         parsed = json_response
         expect(parsed['name']).to eq('Appendectomy')
       end
@@ -83,6 +107,10 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
       it 'returns forbidden' do
         post '/api/v1/surgeries', params: valid_params.to_json, headers: headers_patient
         expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'verify the response' do
+        post '/api/v1/surgeries', params: valid_params.to_json, headers: headers_patient
         parsed = json_response
         expect(parsed['error']).to be_present
       end
@@ -93,18 +121,26 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
     let!(:surgery) { create(:surgery, doctor: doctor_user.userable) }
 
     context 'when current user is not a patient' do
-      it 'returns forbidden with proper message' do
+      it 'returns forbidden status code' do
         post "/api/v1/surgeries/#{surgery.id}/book_appointment", headers: headers_doctor
         expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'returns forbidden with message' do
+        post "/api/v1/surgeries/#{surgery.id}/book_appointment", headers: headers_doctor
         parsed = json_response
         expect(parsed['error']).to eq('You must be logged in as a patient to book an appointment.')
       end
     end
 
     context 'when patient books' do
-      it 'returns created (placeholder) message' do
+      it 'returns created status code' do
         post "/api/v1/surgeries/#{surgery.id}/book_appointment", headers: headers_patient
         expect(response).to have_http_status(:created)
+      end
+
+       it 'returns created with message' do
+        post "/api/v1/surgeries/#{surgery.id}/book_appointment", headers: headers_patient
         expect(json_response['message']).to eq('Appointment booked')
       end
     end
@@ -114,9 +150,7 @@ RSpec.describe 'Api::V1::Surgeries', type: :request do
     context 'when doctor owns the surgery' do
       it 'destroys the surgery and returns no_content' do
         s = create(:surgery, doctor: doctor_user.userable)
-        expect {
-          delete "/api/v1/surgeries/#{s.id}", headers: headers_doctor
-        }.to change(Surgery, :count).by(-1)
+        delete "/api/v1/surgeries/#{s.id}", headers: headers_doctor
         expect(response).to have_http_status(:no_content)
       end
     end

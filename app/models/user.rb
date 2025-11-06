@@ -1,5 +1,4 @@
 class User < ApplicationRecord
- 
   include Ransackable
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, :registerable
@@ -7,12 +6,16 @@ class User < ApplicationRecord
 
   has_many :doctors
   has_many :patients
- 
-  validates :phone_no,presence: true, length: { is: 10, message: "must be exactly 10 digits" }
+
+  validates :phone_no, presence: true, length: { is: 10, message: "must be exactly 10 digits" }
   validate :dob_cannot_be_in_future
   validate :name_should_not_have_other_char
 
   before_save :capitalize_name, :set_age
+
+  scope :patient, -> { where(userable_type: "Patient") }
+  scope :doctor, -> { where(userable_type: "Doctor") }
+
 
   private
 
@@ -28,15 +31,9 @@ class User < ApplicationRecord
     return unless dob.present?
     today = Date.today
     self.age = today.year - dob.year
-    year = today.year
-    month = dob.month
-    day = dob.day  
-    birthday_this_year = Date.new(year, month, day)
-  
-    self.age -= 1 if birthday_this_year > today
   end
 
-  
+
   def name_should_not_have_other_char
     if name.present? && name !~ /\A[a-zA-Z\s]+\z/
       errors.add(:name, "should only contain alphabets and spaces")

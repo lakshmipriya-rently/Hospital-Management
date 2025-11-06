@@ -1,14 +1,13 @@
 ActiveAdmin.register Appointment do
-  
-   scope :confirmed
-   scope :pending
+ scope :confirmed
+ scope :pending
 
-   filter :scheduled_at 
-   filter :status
-   filter :disease    
+ filter :scheduled_at
+ filter :status
+ filter :disease
 
-  index do
-    selectable_column
+ index do
+   selectable_column
     id_column
     column "Email" do |appointment|
        appointment.patient.user.email
@@ -23,5 +22,4 @@ ActiveAdmin.register Appointment do
     column :status
     actions
   end
-  
 end

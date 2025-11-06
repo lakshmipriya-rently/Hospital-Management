@@ -1,12 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe PatientsController, type: :controller do
-   let!(:patient) { create(:patient) }
-     
+  let!(:patient) { create(:patient) }
 
-    describe "GET #index" do
-       before { get :index }
- 
+  describe "GET #index" do
+    before { get :index }
+
     it "assigns all patients to @patients" do
       expect(assigns(:patients)).to include(patient)
     end
@@ -16,8 +15,7 @@ RSpec.describe PatientsController, type: :controller do
     end
   end
 
-
-   describe "GET #show" do
+  describe "GET #show" do
     before { get :show, params: { id: patient.id } }
 
     it "assigns the requested patient to @patient" do
@@ -28,37 +26,35 @@ RSpec.describe PatientsController, type: :controller do
       expect(response).to render_template(:show)
     end
 
-   context "when unauthenticated" do
-     before { get :show , params:{ id: 9999 } }
-    it "redirects to the unauthenticated root path" do
-        expect(response).to redirect_to(unauthenticated_root_path)
-    end
- end
+    context "when unauthenticated" do
+      before { get :show, params: { id: 9999 } }
 
+      it "redirects to the unauthenticated root path" do
+        expect(response).to redirect_to(unauthenticated_root_path)
+      end
+    end
   end
 
+  describe "GET #edit" do
+    before { get :edit, params: { id: patient.id } }
 
-     describe "GET #edit" do 
-      before { get :edit, params: { id: patient.id } }
-
-      it "does not build a new available" do
-        expect(assigns(:patient)).to eq(patient)
-      end
-
-      it 'renders the edit template' do
-        expect(response).to render_template(:edit)
-      end
+    it "does not build a new available" do
+      expect(assigns(:patient)).to eq(patient)
     end
 
+    it "renders the edit template" do
+      expect(response).to render_template(:edit)
+    end
+  end
 
-   describe "PATCH #update" do
+  describe "PATCH #update" do
     context "with valid params" do
       let(:valid_params) do
         {
           id: patient.id,
           patient: {
             address: "Eachanari,Coimbatore",
-            blood_group:"O+"
+            blood_group: "O+"
           }
         }
       end
@@ -97,48 +93,40 @@ RSpec.describe PatientsController, type: :controller do
     end
   end
 
+  describe "GET #confirmed" do
+    before { get :confirmed, params: { id: patient.id } }
 
+    it "assigns confirmed appointments to @appointments" do
+      confirmed = create(:appointment, patient: patient, status: :confirmed)
+      expect(assigns(:appointments)).to include(confirmed)
+    end
+  end
 
-   describe "GET #confirmed" do 
-    before {get :confirmed,params: {id: patient.id}}
-     it "assigns confirmed appointments to @appointments" do
-        confirmed = create(:appointment,patient: patient,status: :confirmed)
-        expect(assigns(:appointments)).to include(confirmed)
-     end
-   end
-  
-   describe "private method check_and_update_status" do
-     before { get :show, params: { id: patient.id } }
-     
-     it "updates payment status to paid "  do
-         bill = create(:bill, appointment: create(:appointment, patient: patient))
-         payment = create(:payment, bill: bill, status: :pending)
-         bill.update(paid_amount: bill.tot_amount)
-         get :show, params: { id: patient.id }
-         expect(payment.reload.status).to eq("paid")
-     end
+  describe "private method check_and_update_status" do
+    before { get :show, params: { id: patient.id } }
 
+    it "updates payment status to paid" do
+      bill = create(:bill, appointment: create(:appointment, patient: patient))
+      payment = create(:payment, bill: bill, status: :pending)
+      bill.update(paid_amount: bill.tot_amount)
+      get :show, params: { id: patient.id }
+      expect(payment.reload.status).to eq("paid")
+    end
 
-     it "updates payment status to un_paid "  do
-         bill = create(:bill, appointment: create(:appointment, patient: patient))
-         payment = create(:payment, bill: bill, status: :pending)
-         bill.update(paid_amount: 1)
-         get :show, params: { id: patient.id }
-         expect(payment.reload.status).to eq("un_paid")
-     end
+    it "updates payment status to un_paid" do
+      bill = create(:bill, appointment: create(:appointment, patient: patient))
+      payment = create(:payment, bill: bill, status: :pending)
+      bill.update(paid_amount: 1)
+      get :show, params: { id: patient.id }
+      expect(payment.reload.status).to eq("un_paid")
+    end
 
-
-     it "updates payment status to pending "  do
-         bill = create(:bill, appointment: create(:appointment, patient: patient))
-         payment = create(:payment, bill: bill, status: :pending)
-         bill.update(paid_amount: bill.tot_amount - 50)
-         get :show, params: { id: patient.id }
-         expect(payment.reload.status).to eq("pending")
-     end
-
-   end
-
-
-
-
-end  
+    it "updates payment status to pending" do
+      bill = create(:bill, appointment: create(:appointment, patient: patient))
+      payment = create(:payment, bill: bill, status: :pending)
+      bill.update(paid_amount: bill.tot_amount - 50)
+      get :show, params: { id: patient.id }
+      expect(payment.reload.status).to eq("pending")
+    end
+  end
+end

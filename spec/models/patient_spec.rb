@@ -1,60 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
-  
-  context "validations" do
-    
-    before(:each) do
-      @patient = Patient.new(blood_group:nil,address:nil)
-    end
-    
-    it "validates blood_group presence" do
-      @patient.validate
-      expect(@patient.errors[:blood_group]).to include("can't be blank")
-    end
+  context "when validates" do
+   subject  { described_class.new(blood_group: nil, address: nil) }
 
-    it "validates address presence" do 
-      @patient.validate
-      expect(@patient.errors[:blood_group]).to include("can't be blank")
-    end
-  end 
+    it_behaves_like "presence validation", :blood_group
+    it_behaves_like "presence validation", :address
+  end
 
   describe "associations" do
-    it "has_many doctors" do
-      association = Patient.reflect_on_association(:doctors)
-      expect(association.macro).to eq :has_many
-    end
+    it_behaves_like "has association", :doctors, :has_many
+    it_behaves_like "has association", :bills, :has_many
+    it_behaves_like "has association", :appointments, :has_many
+    it_behaves_like "has association", :user, :has_one
+    it_behaves_like "has association", :surgeries, :has_many
 
     it "has_many doctors through appointments" do
-      association = Patient.reflect_on_association(:doctors)
+      association = described_class.reflect_on_association(:doctors)
       expect(association.options[:through]).to eq :appointments
-    end
-    
-    it "has_many bills" do
-      association = Patient.reflect_on_association(:bills)
-      expect(association.macro).to eq :has_many
-    end
-
-    it "has_many appontments" do
-      association = Patient.reflect_on_association(:appointments)
-      expect(association.macro).to eq :has_many
-    end
-     
-    it "has_one user" do
-      association = Patient.reflect_on_association(:user)
-      expect(association.macro).to eq :has_one
-    end
-
-    it "has_many surgeries" do
-      association = Patient.reflect_on_association(:surgeries)
-      expect(association.macro).to eq :has_many
     end
 
     it "has_many surgeries through appointments" do
-      association = Patient.reflect_on_association(:surgeries)
+      association = described_class.reflect_on_association(:surgeries)
       expect(association.options[:through]).to eq :appointments
     end
   end
 end
-
-
